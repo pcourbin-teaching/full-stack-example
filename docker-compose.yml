@@ -1,0 +1,53 @@
+# Please, run docker-dev-prepare.sh before.
+version: '3'
+services:
+  db:
+    image: mysql:5.7
+    volumes:
+     - ./data-init:/docker-entrypoint-initdb.d
+    environment:
+        MYSQL_ROOT_PASSWORD: rootpassword
+        MYSQL_DATABASE: debatsido
+        MYSQL_USER: user
+        MYSQL_PASSWORD: password
+    ports:
+       - "3307:3306"
+    restart: always
+
+  api:
+    image: pcourbin/debatido_api:0.1.0
+    build: ./api
+    environment:
+       PORT: 3000
+       DB_HOST: db
+       DB_USER: user
+       DB_PASSWORD: password
+       DB_NAME: debatsido
+    ports:
+      - 4000:3000
+    depends_on:
+      - db
+    restart: always
+
+  front:
+    image: pcourbin/debatido_front:0.1.0
+    build: ./front
+    environment:
+       API_URL: http://api:3000
+    ports:
+      - 3000:3000
+    depends_on:
+      - db
+      - api
+    restart: always
+
+  dbadmin:
+    image: phpmyadmin/phpmyadmin:edge-4.9
+    environment:
+        #PMA_ARBITRARY: 1
+        PMA_HOST: db
+        MPA_PORT: 3306
+        PMA_USER: user
+        PMA_PASSWORD: password
+    ports:
+       - "8100:80"
