@@ -1,141 +1,141 @@
-LOAD DATA INFILE "/var/lib/mysql-files/Source_Type.csv"
-INTO TABLE `Source_Type`
+LOAD DATA INFILE "/var/lib/mysql-files/referenceType.csv"
+INTO TABLE `referenceType`
 COLUMNS TERMINATED BY ';'
 OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 LINES;
 
-LOAD DATA INFILE "/var/lib/mysql-files/Source.csv"
+LOAD DATA INFILE "/var/lib/mysql-files/reference.csv"
 REPLACE
-INTO TABLE `Source`
+INTO TABLE `reference`
 COLUMNS TERMINATED BY ';'
 OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 LINES
 
-(@id, @title, @text, @url, @date, @id_type, @reliability, @date_update)
+(@id, @title, @text, @url, @date, @typeID, @reliability, @dateUpdate)
 SET
 id = nullif(@id,''),
 title = nullif(@title,''),
 text = nullif(@text,''),
 url = nullif(@url,''),
 date = IF(CHAR_LENGTH((@date)) = 0, NULL, STR_TO_DATE(@date,'%d/%m/%Y')),
-id_type = nullif(@id_type,''),
+typeID = nullif(@typeID,''),
 reliability = nullif(@reliability,''),
-date_update = IF(CHAR_LENGTH((@date_update)) = 0, now(), @date_update)
+dateUpdate = IF(CHAR_LENGTH((@dateUpdate)) = 0, now(), @dateUpdate)
 ;
 
-LOAD DATA INFILE "/var/lib/mysql-files/Quote_Type.csv"
-INTO TABLE `Quote_Type`
+LOAD DATA INFILE "/var/lib/mysql-files/quoteType.csv"
+INTO TABLE `quoteType`
 COLUMNS TERMINATED BY ';'
 OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 LINES;
 
 
-LOAD DATA INFILE "/var/lib/mysql-files/Quote.csv"
+LOAD DATA INFILE "/var/lib/mysql-files/quote.csv"
 REPLACE
-INTO TABLE `Quote`
+INTO TABLE `quote`
 COLUMNS TERMINATED BY ';'
 OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 LINES
 
-(@id, @title, @text, @id_type, @date_update)
+(@id, @title, @text, @typeID, @dateUpdate)
 SET
 id = nullif(@id,''),
 title = nullif(@title,''),
 text = nullif(@text,''),
-id_type = nullif(@id_type,''),
-date_update = IF(CHAR_LENGTH((@date_update)) = 0, now(), @date_update)
+typeID = nullif(@typeID,''),
+dateUpdate = IF(CHAR_LENGTH((@dateUpdate)) = 0, now(), @dateUpdate)
 ;
 
-LOAD DATA INFILE "/var/lib/mysql-files/QuoteLink_Type.csv"
-INTO TABLE `QuoteLink_Type`
+LOAD DATA INFILE "/var/lib/mysql-files/quoteLinkType.csv"
+INTO TABLE `quoteLinkType`
 COLUMNS TERMINATED BY ';'
 OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 LINES;
 
-LOAD DATA INFILE "/var/lib/mysql-files/QuoteLink.csv"
+LOAD DATA INFILE "/var/lib/mysql-files/quoteLink.csv"
 REPLACE
-INTO TABLE `QuoteLink`
+INTO TABLE `quoteLink`
 COLUMNS TERMINATED BY ';'
 OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 LINES
 
-(@id_quote_main, @id_quote_support, @id_type, @date_update)
+(@quoteMainID, @quoteSupportID, @typeID, @dateUpdate)
 SET
-id_quote_main = nullif(@id_quote_main,''),
-id_quote_support = nullif(@id_quote_support,''),
-id_type = nullif(@id_type,''),
-date_update = IF(CHAR_LENGTH((@date_update)) = 0, now(), @date_update)
+quoteMainID = nullif(@quoteMainID,''),
+quoteSupportID = nullif(@quoteSupportID,''),
+typeID = nullif(@typeID,''),
+dateUpdate = IF(CHAR_LENGTH((@dateUpdate)) = 0, now(), @dateUpdate)
 ;
 
-LOAD DATA INFILE "/var/lib/mysql-files/Theme.csv"
-INTO TABLE `Theme`
+LOAD DATA INFILE "/var/lib/mysql-files/theme.csv"
+INTO TABLE `theme`
 COLUMNS TERMINATED BY ';'
 OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 LINES;
 
-LOAD DATA INFILE "/var/lib/mysql-files/Entity.csv"
+LOAD DATA INFILE "/var/lib/mysql-files/entity.csv"
 REPLACE
-INTO TABLE `Entity`
+INTO TABLE `entity`
 COLUMNS TERMINATED BY ';'
 OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 LINES
 
-(@id, @type, @name, @link, @photo, @date_update)
+(@id, @type, @name, @link, @photo, @dateUpdate)
 SET
 id = nullif(@id,''),
 type = nullif(@type,''),
 name = nullif(@name,''),
 link = nullif(@link,''),
 photo = nullif(@photo,''),
-date_update = IF(CHAR_LENGTH((@date_update)) = 0, now(), @date_update)
+dateUpdate = IF(CHAR_LENGTH((@dateUpdate)) = 0, now(), @dateUpdate)
 ;
 
-LOAD DATA INFILE "/var/lib/mysql-files/Person.csv"
+LOAD DATA INFILE "/var/lib/mysql-files/person.csv"
 REPLACE
-INTO TABLE `Person`
+INTO TABLE `person`
 COLUMNS TERMINATED BY ';'
 OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 LINES
 
-(@id, @surname, @role, @date_update)
+(@id, @surname, @role, @dateUpdate)
 SET
 id = nullif(@id,''),
 surname = nullif(@surname,''),
 role = nullif(@role,''),
-date_update = IF(CHAR_LENGTH((@date_update)) = 0, now(), @date_update)
+dateUpdate = IF(CHAR_LENGTH((@dateUpdate)) = 0, now(), @dateUpdate)
 ;
 
-LOAD DATA INFILE "/var/lib/mysql-files/SourceAuthor.csv"
-INTO TABLE `SourceAuthor`
+LOAD DATA INFILE "/var/lib/mysql-files/referenceAuthor.csv"
+INTO TABLE `referenceAuthor`
 COLUMNS TERMINATED BY ';'
 OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 LINES;
 
-LOAD DATA INFILE "/var/lib/mysql-files/SourceQuote.csv"
-INTO TABLE `SourceQuote`
+LOAD DATA INFILE "/var/lib/mysql-files/quoteReference.csv"
+INTO TABLE `quoteReference`
 COLUMNS TERMINATED BY ';'
 OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 LINES;
 
-LOAD DATA INFILE "/var/lib/mysql-files/QuoteTheme.csv"
-INTO TABLE `QuoteTheme`
+LOAD DATA INFILE "/var/lib/mysql-files/quoteTheme.csv"
+INTO TABLE `quoteTheme`
 COLUMNS TERMINATED BY ';'
 OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 LINES;
 
-SELECT * FROM Quote q JOIN Quote_Type qt ON q.id_type = qt.id JOIN QuoteTheme qth ON qth.id_quote = q.id JOIN Theme th ON qth.id_theme = th.id;
-SELECT * FROM Entity e JOIN QuoteAuthor qa ON e.id = qa.id_author JOIN Quote q ON qa.id_quote = q.id;
-SELECT * FROM Entity e JOIN SourceAuthor sa ON e.id = sa.id_author JOIN Source s ON sa.id_source = s.id JOIN Source_Type st ON s.id_type = st.id;
-SELECT q1.title, q2.title, qlt.title FROM Quote q1 JOIN QuoteLink ql ON q1.id = ql.id_quote_main JOIN Quote q2 ON ql.id_quote_support = q2.id JOIN QuoteLink_Type qlt ON ql.id_type = qlt.id;
+SELECT * FROM quote q JOIN quoteType qt ON q.typeID = qt.id JOIN quoteTheme qth ON qth.quoteID = q.id JOIN theme th ON qth.themeID = th.id;
+SELECT * FROM entity e JOIN quoteAuthor qa ON e.id = qa.authorID JOIN quote q ON qa.quoteID = q.id;
+SELECT * FROM entity e JOIN referenceAuthor sa ON e.id = sa.authorID JOIN reference s ON sa.referenceID = s.id JOIN referenceType st ON s.typeID = st.id;
+SELECT q1.title, q2.title, qlt.title FROM quote q1 JOIN quoteLink ql ON q1.id = ql.quoteMainID JOIN quote q2 ON ql.quoteSupportID = q2.id JOIN quoteLinkType qlt ON ql.typeID = qlt.id;
