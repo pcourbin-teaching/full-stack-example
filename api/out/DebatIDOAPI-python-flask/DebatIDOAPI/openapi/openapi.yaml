@@ -56,7 +56,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/protagonistNew'
+              $ref: '#/components/schemas/protagonist'
         required: true
       responses:
         "201":
@@ -213,7 +213,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/quoteNew'
+              $ref: '#/components/schemas/quote'
         required: true
       responses:
         "201":
@@ -420,7 +420,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/referenceNew'
+              $ref: '#/components/schemas/reference'
         required: true
       responses:
         "201":
@@ -577,7 +577,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/themeNew'
+              $ref: '#/components/schemas/theme'
         required: true
       responses:
         "201":
@@ -859,9 +859,10 @@ components:
           type: integer
         title:
           type: string
+      required:
+      - id
+      - title
       type: object
-    referenceTypeNew:
-      $ref: '#/components/schemas/referenceType'
     reference:
       example:
         id: 42
@@ -893,11 +894,10 @@ components:
             $ref: '#/components/schemas/protagonist'
           type: array
       required:
+      - id
       - title
       - typeID
       type: object
-    referenceNew:
-      $ref: '#/components/schemas/reference'
     quoteType:
       example:
         id: 42
@@ -909,10 +909,9 @@ components:
         title:
           type: string
       required:
+      - id
       - title
       type: object
-    quoteTypeNew:
-      $ref: '#/components/schemas/quoteType'
     quote:
       example:
         title: Faut-il instaurer un revenu de base ?
@@ -953,11 +952,10 @@ components:
             $ref: '#/components/schemas/quote'
           type: array
       required:
+      - id
       - title
       - typeID
       type: object
-    quoteNew:
-      $ref: '#/components/schemas/quote'
     quoteLinkType:
       example:
         id: 2
@@ -968,9 +966,10 @@ components:
           type: integer
         title:
           type: string
+      required:
+      - id
+      - title
       type: object
-    quoteLinkTypeNew:
-      $ref: '#/components/schemas/quoteLinkType'
     quoteLink:
       example:
         quoteMainID: 1
@@ -994,9 +993,11 @@ components:
           type: string
         dateUpdate:
           type: string
+      required:
+      - quoteMainID
+      - quoteSupportID
+      - typeID
       type: object
-    quoteLinkNew:
-      $ref: '#/components/schemas/quoteLink'
     theme:
       example:
         id: 1
@@ -1007,9 +1008,10 @@ components:
           type: integer
         title:
           type: string
+      required:
+      - id
+      - title
       type: object
-    themeNew:
-      $ref: '#/components/schemas/theme'
     quoteTheme:
       example:
         themeID: 3
@@ -1025,9 +1027,10 @@ components:
           type: integer
         quote:
           $ref: '#/components/schemas/quote'
+      required:
+      - quoteID
+      - themeID
       type: object
-    quoteThemeNew:
-      $ref: '#/components/schemas/quoteTheme'
     quoteReference:
       properties:
         quoteID:
@@ -1044,8 +1047,6 @@ components:
       - quoteID
       - referenceID
       type: object
-    quoteReferenceNew:
-      $ref: '#/components/schemas/quoteReference'
     protagonist:
       properties:
         id:
@@ -1068,9 +1069,11 @@ components:
           $ref: '#/components/schemas/person'
         company:
           $ref: '#/components/schemas/company'
+      required:
+      - id
+      - name
+      - type
       type: object
-    protagonistNew:
-      $ref: '#/components/schemas/protagonist'
     quoteAuthor:
       properties:
         quoteID:
@@ -1083,9 +1086,10 @@ components:
           type: integer
         author:
           $ref: '#/components/schemas/protagonist'
+      required:
+      - authorID
+      - quoteID
       type: object
-    quoteAuthorNew:
-      $ref: '#/components/schemas/quoteAuthor'
     referenceAuthor:
       properties:
         referenceID:
@@ -1098,15 +1102,13 @@ components:
           type: integer
         author:
           $ref: '#/components/schemas/protagonist'
+      required:
+      - authorID
+      - referenceID
       type: object
-    referenceAuthorNew:
-      $ref: '#/components/schemas/referenceAuthor'
     person:
       properties:
         id:
-          format: int32
-          type: integer
-        protagonistID:
           format: int32
           type: integer
         surname:
@@ -1115,24 +1117,21 @@ components:
           type: string
         dateUpdate:
           type: string
+      required:
+      - id
       type: object
-    personNew:
-      $ref: '#/components/schemas/person'
     company:
       properties:
         id:
-          format: int32
-          type: integer
-        protagonistID:
           format: int32
           type: integer
         siret:
           type: string
         dateUpdate:
           type: string
+      required:
+      - id
       type: object
-    companyNew:
-      $ref: '#/components/schemas/company'
   securitySchemes:
     ApiKeyAuth:
       in: header

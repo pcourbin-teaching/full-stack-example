@@ -5,6 +5,9 @@ from DebatIDOAPI.models.error import Error  # noqa: E501
 from DebatIDOAPI.models.theme import Theme  # noqa: E501
 from DebatIDOAPI import util
 
+from DebatIDOAPI.controllers.database_controller import Database
+from flask import current_app
+import inspect
 
 def theme_get(offset=None, limit=None):  # noqa: E501
     """Retrieve a collection of Theme objects
@@ -18,19 +21,26 @@ def theme_get(offset=None, limit=None):  # noqa: E501
 
     :rtype: None
     """
-    return 'do some magic!'
+
+    list = Database.getList(Theme)
+    for l in list :
+        Database.getDetailsFromOtherClassParameters(l)
+
+    return list
 
 
-def theme_post(body):  # noqa: E501
+def theme_post(theme):  # noqa: E501
     """Create Theme
 
      # noqa: E501
 
-    :param body: 
-    :type body: 
+    :param theme:
+    :type theme: dict | bytes
 
     :rtype: None
     """
+    if connexion.request.is_json:
+        theme = Theme.from_dict(connexion.request.get_json())  # noqa: E501
     return 'do some magic!'
 
 
@@ -44,7 +54,7 @@ def themes_theme_iddelete(theme_id):  # noqa: E501
 
     :rtype: None
     """
-    return 'do some magic!'
+    return Database.deleteObjectFromID(Theme,theme_id)
 
 
 def themes_theme_idget(theme_id):  # noqa: E501
@@ -57,7 +67,9 @@ def themes_theme_idget(theme_id):  # noqa: E501
 
     :rtype: None
     """
-    return 'do some magic!'
+    myObject = Database.getObjectFromID(Theme,theme_id)
+    Database.getDetailsFromOtherClassParameters(myObject)
+    return myObject
 
 
 def themes_theme_idpatch(theme_id, theme):  # noqa: E501
@@ -67,11 +79,13 @@ def themes_theme_idpatch(theme_id, theme):  # noqa: E501
 
     :param theme_id: The Id of a Theme
     :type theme_id: int
-    :param theme: 
+    :param theme:
     :type theme: dict | bytes
 
     :rtype: None
     """
     if connexion.request.is_json:
         theme = Theme.from_dict(connexion.request.get_json())  # noqa: E501
+
+    Database.patchObjectFromID(theme, theme_id)
     return 'do some magic!'

@@ -79,6 +79,8 @@ class QuoteAuthor(Model):
         :param quote_id: The quote_id of this QuoteAuthor.
         :type quote_id: int
         """
+        if quote_id is None:
+            raise ValueError("Invalid value for `quote_id`, must not be `None`")  # noqa: E501
 
         self._quote_id = quote_id
 
@@ -121,6 +123,8 @@ class QuoteAuthor(Model):
         :param author_id: The author_id of this QuoteAuthor.
         :type author_id: int
         """
+        if author_id is None:
+            raise ValueError("Invalid value for `author_id`, must not be `None`")  # noqa: E501
 
         self._author_id = author_id
 

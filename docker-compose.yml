@@ -21,7 +21,7 @@ services:
     image: pcourbin/debatido_api:0.1.0
     build: ./api/out/DebatIDOAPI-python-flask
     volumes:
-     - ./api/out/DebatIDOAPI-python-flask/DebatIDOAPI:/usr/src/app/DebatIDOAPI
+     - ./api/out/DebatIDOAPI-python-flask/DebatIDOAPI:/usr/src/app/DebatIDOAPI #For development
     environment:
         DATABASE_URL: "mysql://user:password@db:3306/debatsido"
         PORT: "3000"
@@ -30,19 +30,6 @@ services:
     depends_on:
       - db
     restart: always
-
-
-  apiauto:
-    image: pcourbin/openapi-exposedb-safrs:2.7.0
-    environment:
-#      - DB_HOST=db.serveur.fr
-      - DB_PORT=3306
-      - DB_NAME=debatsido
-      - DB_USER=user
-      - DB_PASSWORD=password
-      - PORT=7000
-    ports:
-      - 7000:7000
 
   front:
     image: pcourbin/debatido_front:0.1.0

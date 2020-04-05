@@ -92,6 +92,8 @@ class QuoteLink(Model):
         :param quote_main_id: The quote_main_id of this QuoteLink.
         :type quote_main_id: int
         """
+        if quote_main_id is None:
+            raise ValueError("Invalid value for `quote_main_id`, must not be `None`")  # noqa: E501
 
         self._quote_main_id = quote_main_id
 
@@ -134,6 +136,8 @@ class QuoteLink(Model):
         :param quote_support_id: The quote_support_id of this QuoteLink.
         :type quote_support_id: int
         """
+        if quote_support_id is None:
+            raise ValueError("Invalid value for `quote_support_id`, must not be `None`")  # noqa: E501
 
         self._quote_support_id = quote_support_id
 
@@ -176,6 +180,8 @@ class QuoteLink(Model):
         :param type_id: The type_id of this QuoteLink.
         :type type_id: int
         """
+        if type_id is None:
+            raise ValueError("Invalid value for `type_id`, must not be `None`")  # noqa: E501
 
         self._type_id = type_id
 

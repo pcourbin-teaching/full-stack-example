@@ -15,13 +15,11 @@ class Person(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, id=None, protagonist_id=None, surname=None, role=None, date_update=None):  # noqa: E501
+    def __init__(self, id=None, surname=None, role=None, date_update=None):  # noqa: E501
         """Person - a model defined in OpenAPI
 
         :param id: The id of this Person.  # noqa: E501
         :type id: int
-        :param protagonist_id: The protagonist_id of this Person.  # noqa: E501
-        :type protagonist_id: int
         :param surname: The surname of this Person.  # noqa: E501
         :type surname: str
         :param role: The role of this Person.  # noqa: E501
@@ -31,7 +29,6 @@ class Person(Model):
         """
         self.openapi_types = {
             'id': int,
-            'protagonist_id': int,
             'surname': str,
             'role': str,
             'date_update': str
@@ -39,14 +36,12 @@ class Person(Model):
 
         self.attribute_map = {
             'id': 'id',
-            'protagonist_id': 'protagonistID',
             'surname': 'surname',
             'role': 'role',
             'date_update': 'dateUpdate'
         }
 
         self._id = id
-        self._protagonist_id = protagonist_id
         self._surname = surname
         self._role = role
         self._date_update = date_update
@@ -80,29 +75,10 @@ class Person(Model):
         :param id: The id of this Person.
         :type id: int
         """
+        if id is None:
+            raise ValueError("Invalid value for `id`, must not be `None`")  # noqa: E501
 
         self._id = id
-
-    @property
-    def protagonist_id(self):
-        """Gets the protagonist_id of this Person.
-
-
-        :return: The protagonist_id of this Person.
-        :rtype: int
-        """
-        return self._protagonist_id
-
-    @protagonist_id.setter
-    def protagonist_id(self, protagonist_id):
-        """Sets the protagonist_id of this Person.
-
-
-        :param protagonist_id: The protagonist_id of this Person.
-        :type protagonist_id: int
-        """
-
-        self._protagonist_id = protagonist_id
 
     @property
     def surname(self):

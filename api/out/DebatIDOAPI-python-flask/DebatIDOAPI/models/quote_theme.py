@@ -79,6 +79,8 @@ class QuoteTheme(Model):
         :param theme_id: The theme_id of this QuoteTheme.
         :type theme_id: int
         """
+        if theme_id is None:
+            raise ValueError("Invalid value for `theme_id`, must not be `None`")  # noqa: E501
 
         self._theme_id = theme_id
 
@@ -121,6 +123,8 @@ class QuoteTheme(Model):
         :param quote_id: The quote_id of this QuoteTheme.
         :type quote_id: int
         """
+        if quote_id is None:
+            raise ValueError("Invalid value for `quote_id`, must not be `None`")  # noqa: E501
 
         self._quote_id = quote_id
 

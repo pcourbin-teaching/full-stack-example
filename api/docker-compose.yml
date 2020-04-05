@@ -6,21 +6,10 @@ services:
     build:
       context: ./out/DebatIDOAPI-python-flask
       dockerfile: Dockerfile
+    volumes:
+      - ./out/DebatIDOAPI-python-flask/DebatIDOAPI:/usr/src/app/DebatIDOAPI #For development
     environment:
         DATABASE_URL: "mysql://user:password@db:3306/db_test"
         PORT: "8080"
     ports:
-      - 8000:8080
-
-  apiauto:
-    image: pcourbin/openapi-exposedb-safrs:2.7.0
-    environment:
-#      - DB_HOST=db.serveur.fr
-      - DB_PORT=3306
-      - DB_NAME=debatsido
-      - DB_USER=user
-      - DB_PASSWORD=password
-      - PORT=7000
-    ports:
-      - 7000:7000
-#      - PYTHONPATH=sqlacodegen/ python3 sqlacodegen/sqlacodegen/main.py mysql+pymysql://$DB_USER:$DB_PASSWORD@$DB_HOST:$DB_PORT/$DB_NAME
+      - 8000:8080s

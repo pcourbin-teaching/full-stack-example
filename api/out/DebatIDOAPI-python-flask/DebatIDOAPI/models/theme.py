@@ -65,6 +65,8 @@ class Theme(Model):
         :param id: The id of this Theme.
         :type id: int
         """
+        if id is None:
+            raise ValueError("Invalid value for `id`, must not be `None`")  # noqa: E501
 
         self._id = id
 
@@ -86,5 +88,7 @@ class Theme(Model):
         :param title: The title of this Theme.
         :type title: str
         """
+        if title is None:
+            raise ValueError("Invalid value for `title`, must not be `None`")  # noqa: E501
 
         self._title = title

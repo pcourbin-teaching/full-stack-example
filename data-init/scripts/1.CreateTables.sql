@@ -110,12 +110,12 @@ CREATE TABLE `quoteTheme` (
   `quoteID` INT NOT NULL,
   CONSTRAINT `FK_quoteID_theme` FOREIGN KEY (`themeID`)
     REFERENCES `theme` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `FK_themequoteID` FOREIGN KEY (`quoteID`)
     REFERENCES `quote` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 ) CHARACTER SET utf8mb4;
 
 CREATE TABLE `quoteReference` (
@@ -152,12 +152,12 @@ CREATE TABLE `quoteAuthor` (
   `authorID` INT NOT NULL,
   CONSTRAINT `FK_authorID_quote` FOREIGN KEY (`quoteID`)
     REFERENCES `quote` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `FK_quoteauthorID` FOREIGN KEY (`authorID`)
     REFERENCES `protagonist` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 ) CHARACTER SET utf8mb4;
 
 CREATE TABLE `referenceAuthor` (
@@ -165,23 +165,22 @@ CREATE TABLE `referenceAuthor` (
   `authorID` INT NOT NULL,
   CONSTRAINT `FK_authorID_reference` FOREIGN KEY (`referenceID`)
     REFERENCES `reference` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `FK_referenceauthorID` FOREIGN KEY (`authorID`)
     REFERENCES `protagonist` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 ) CHARACTER SET utf8mb4;
 
 CREATE TABLE `person` (
-  `id` INT AUTO_INCREMENT NOT NULL,
-  `protagonistID` INT NOT NULL,
+  `id` INT NOT NULL,
   `surname` TEXT NULL,
   `role` TEXT NULL,
   `dateUpdate` DATETIME DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   INDEX `I_person_idx` (`id` ASC),
-  CONSTRAINT `FK_id_person_protagonist` FOREIGN KEY (`protagonistID`)
+  CONSTRAINT `FK_id_person_protagonist` FOREIGN KEY (`id`)
     REFERENCES `protagonist` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
@@ -192,19 +191,13 @@ BEFORE UPDATE ON `person`
     FOR EACH ROW
 		SET new.dateUpdate = NOW();
 
-CREATE TRIGGER TR_person_id_updater
-BEFORE UPDATE ON `person`
-    FOR EACH ROW
-		SET new.id = new.protagonistID;
-
 CREATE TABLE `company` (
-  `id` INT AUTO_INCREMENT NOT NULL,
-  `protagonistID` INT NOT NULL,
+  `id` INT NOT NULL,
   `siret` TEXT NULL,
   `dateUpdate` DATETIME DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   INDEX `I_company_idx` (`id` ASC),
-  CONSTRAINT `FK_id_company_protagonist` FOREIGN KEY (`protagonistID`)
+  CONSTRAINT `FK_id_company_protagonist` FOREIGN KEY (`id`)
     REFERENCES `protagonist` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
@@ -214,8 +207,3 @@ CREATE TRIGGER TR_company_dateUpdate_updater
 BEFORE UPDATE ON `company`
     FOR EACH ROW
 		SET new.dateUpdate = NOW();
-
-CREATE TRIGGER TR_company_id_updater
-BEFORE UPDATE ON `company`
-    FOR EACH ROW
-		SET new.id = new.protagonistID;

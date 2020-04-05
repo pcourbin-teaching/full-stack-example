@@ -106,10 +106,9 @@ OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 LINES
 
-(@id, @protagonistID, @surname, @role, @dateUpdate)
+(@id, @surname, @role, @dateUpdate)
 SET
 id = nullif(@id,''),
-protagonistID = nullif(@protagonistID,''),
 surname = nullif(@surname,''),
 role = nullif(@role,''),
 dateUpdate = IF(CHAR_LENGTH((@dateUpdate)) = 0, now(), @dateUpdate)
@@ -143,3 +142,10 @@ SELECT q1.title, q2.title, qlt.title FROM quote q1 JOIN quoteLink ql ON q1.id = 
 
 
 SELECT q.id as quoteID, q.title as title, q.details as details, q.typeID as typeID, qt.title as typeTitle, q.dateUpdate as dateUpdate FROM quote q JOIN quoteType qt ON q.typeID = qt.id;
+SELECT t.id as id, t.title as title FROM theme t JOIN quoteTheme qt ON t.id = qt.themeID WHERE qt.quoteID = 1;
+SELECT r.id, r.title, r.details, r.url, r.date, r.typeID, rt.title, r.reliability, r.dateUpdate FROM reference r JOIN quoteReference qr ON r.id = qr.referenceID JOIN referenceType rt ON r.typeID = rt.id WHERE qr.quoteID = 3;
+
+SELECT p.id, p.type, p.name, p.link, p.photo, p.dateUpdate FROM protagonist p JOIN referenceAuthor ra ON p.id = ra.authorID JOIN reference r ON r.id = ra.referenceID WHERE r.id = 1;
+SELECT pe.id, pe.surname, pe.role, pe.dateUpdate FROM protagonist pr JOIN person pe ON pr.id = pe.id WHERE pr.id = 1;
+SELECT pe.id, pe.surname, pe.role, pe.dateUpdate FROM protagonist pr JOIN person pe ON pr.id = pe.id JOIN quoteAuthor qa ON qa. WHERE pr.id = 1;
+SELECT * FROM company;

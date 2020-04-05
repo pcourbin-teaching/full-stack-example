@@ -42,6 +42,9 @@ components:
 
     referenceType:
       type: object
+      required:
+        - id
+        - title
       properties:
         id:
           type: integer
@@ -52,14 +55,10 @@ components:
         id: 42
         title: Livre
 
-    referenceTypeNew:
-      $ref: '#/components/schemas/referenceType'
-      required:
-        - title
-
     reference:
       type: object
       required:
+        - id
         - title
         - typeID
       properties:
@@ -92,15 +91,10 @@ components:
         id: 42
         title: Livre
 
-    referenceNew:
-      $ref: '#/components/schemas/reference'
-      required:
-        - title
-        - typeID
-
     quoteType:
       type: object
       required:
+        - id
         - title
       properties:
         id:
@@ -112,14 +106,10 @@ components:
         id: 42
         title: Opinion
 
-    quoteTypeNew:
-      $ref: '#/components/schemas/quoteType'
-      required:
-        - title
-
     quote:
       type: object
       required:
+        - id
         - title
         - typeID
       properties:
@@ -152,23 +142,20 @@ components:
         quoteMains:
           type: array
           items:
-            $ref: '#/components/schemas/quote'
+            $ref: '#/components/schemas/quoteLink'
         quoteSupports:
           type: array
           items:
-            $ref: '#/components/schemas/quote'
+            $ref: '#/components/schemas/quoteLink'
       example:
         title: Faut-il instaurer un revenu de base ?
         typeID: 12
 
-    quoteNew:
-      required:
-        - title
-        - typeID
-      $ref: '#/components/schemas/quote'
-
     quoteLinkType:
       type: object
+      required:
+        - id
+        - title
       properties:
         id:
           type: integer
@@ -179,13 +166,12 @@ components:
         id: 2
         title: Contre
 
-    quoteLinkTypeNew:
-      $ref: '#/components/schemas/quoteLinkType'
-      required:
-        - title
-
     quoteLink:
       type: object
+      required:
+        - quoteMainID
+        - quoteSupportID
+        - typeID
       properties:
         quoteMainID:
           type: integer
@@ -209,15 +195,11 @@ components:
         quoteSupportID: 2
         typeID: 1
 
-    quoteLinkNew:
-      $ref: '#/components/schemas/quoteLink'
-      required:
-        - quoteMainID
-        - quoteSupportID
-        - typeID
-
     theme:
       type: object
+      required:
+        - id
+        - title
       properties:
         id:
           type: integer
@@ -228,13 +210,11 @@ components:
         id: 1
         title: Économique
 
-    themeNew:
-      $ref: '#/components/schemas/theme'
-      required:
-        - title
-
     quoteTheme:
       type: object
+      required:
+        - themeID
+        - quoteID
       properties:
         themeID:
           type: integer
@@ -250,17 +230,11 @@ components:
         themeID: 3
         quoteID: 1
 
-    quoteThemeNew:
-      $ref: '#/components/schemas/quoteTheme'
-      required:
-        - themeID
-        - quoteID
-
     quoteReference:
       type: object
       required:
-        - referenceID
         - quoteID
+        - referenceID
       properties:
         quoteID:
           type: integer
@@ -273,14 +247,12 @@ components:
         reference:
           $ref: '#/components/schemas/reference'
 
-    quoteReferenceNew:
-      $ref: '#/components/schemas/quoteReference'
-      required:
-        - quoteID
-        - referenceID
-
     protagonist:
       type: object
+      required:
+        - id
+        - type
+        - name
       properties:
         id:
           type: integer
@@ -301,14 +273,11 @@ components:
         company:
           $ref: '#/components/schemas/company'
 
-    protagonistNew:
-      $ref: '#/components/schemas/protagonist'
-      required:
-        - type
-        - name
-
     quoteAuthor:
       type: object
+      required:
+        - quoteID
+        - authorID
       properties:
         quoteID:
           type: integer
@@ -321,14 +290,11 @@ components:
         author:
           $ref: '#/components/schemas/protagonist'
 
-    quoteAuthorNew:
-      $ref: '#/components/schemas/quoteAuthor'
-      required:
-        - quoteID
-        - authorID
-
     referenceAuthor:
       type: object
+      required:
+        - referenceID
+        - authorID
       properties:
         referenceID:
           type: integer
@@ -341,19 +307,12 @@ components:
         author:
           $ref: '#/components/schemas/protagonist'
 
-    referenceAuthorNew:
-      $ref: '#/components/schemas/referenceAuthor'
-      required:
-        - referenceID
-        - authorID
-
     person:
       type: object
+      required:
+        - id
       properties:
         id:
-          type: integer
-          format: int32
-        protagonistID:
           type: integer
           format: int32
         surname:
@@ -363,31 +322,18 @@ components:
         dateUpdate:
           type: string
 
-    personNew:
-      $ref: '#/components/schemas/person'
-      required:
-        - protagonistID
-
-
     company:
       type: object
+      required:
+        - id
       properties:
         id:
-          type: integer
-          format: int32
-        protagonistID:
           type: integer
           format: int32
         siret:
           type: string
         dateUpdate:
           type: string
-
-    companyNew:
-      $ref: '#/components/schemas/company'
-      required:
-        - protagonistID
-
 
 
   ####################
@@ -586,7 +532,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/quoteNew'
+              $ref: '#/components/schemas/quote'
       responses:
         '201':
           description: Created
@@ -688,7 +634,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/referenceNew'
+              $ref: '#/components/schemas/reference'
       responses:
         '201':
           description: Created
@@ -775,7 +721,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/themeNew'
+              $ref: '#/components/schemas/theme'
       responses:
         '201':
           description: Created
@@ -862,7 +808,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/protagonistNew'
+              $ref: '#/components/schemas/protagonist'
       responses:
         '201':
           description: Created

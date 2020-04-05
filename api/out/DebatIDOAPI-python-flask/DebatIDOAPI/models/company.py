@@ -15,13 +15,11 @@ class Company(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, id=None, protagonist_id=None, siret=None, date_update=None):  # noqa: E501
+    def __init__(self, id=None, siret=None, date_update=None):  # noqa: E501
         """Company - a model defined in OpenAPI
 
         :param id: The id of this Company.  # noqa: E501
         :type id: int
-        :param protagonist_id: The protagonist_id of this Company.  # noqa: E501
-        :type protagonist_id: int
         :param siret: The siret of this Company.  # noqa: E501
         :type siret: str
         :param date_update: The date_update of this Company.  # noqa: E501
@@ -29,20 +27,17 @@ class Company(Model):
         """
         self.openapi_types = {
             'id': int,
-            'protagonist_id': int,
             'siret': str,
             'date_update': str
         }
 
         self.attribute_map = {
             'id': 'id',
-            'protagonist_id': 'protagonistID',
             'siret': 'siret',
             'date_update': 'dateUpdate'
         }
 
         self._id = id
-        self._protagonist_id = protagonist_id
         self._siret = siret
         self._date_update = date_update
 
@@ -75,29 +70,10 @@ class Company(Model):
         :param id: The id of this Company.
         :type id: int
         """
+        if id is None:
+            raise ValueError("Invalid value for `id`, must not be `None`")  # noqa: E501
 
         self._id = id
-
-    @property
-    def protagonist_id(self):
-        """Gets the protagonist_id of this Company.
-
-
-        :return: The protagonist_id of this Company.
-        :rtype: int
-        """
-        return self._protagonist_id
-
-    @protagonist_id.setter
-    def protagonist_id(self, protagonist_id):
-        """Sets the protagonist_id of this Company.
-
-
-        :param protagonist_id: The protagonist_id of this Company.
-        :type protagonist_id: int
-        """
-
-        self._protagonist_id = protagonist_id
 
     @property
     def siret(self):

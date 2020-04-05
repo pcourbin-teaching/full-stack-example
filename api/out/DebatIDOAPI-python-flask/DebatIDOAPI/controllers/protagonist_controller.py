@@ -5,10 +5,9 @@ from DebatIDOAPI.models.error import Error  # noqa: E501
 from DebatIDOAPI.models.protagonist import Protagonist  # noqa: E501
 from DebatIDOAPI import util
 
+from DebatIDOAPI.controllers.database_controller import Database
 from flask import current_app
 import inspect
-
-from DebatIDOAPI.controllers.database_controller import Database
 
 def protagonist_get(offset=None, limit=None):  # noqa: E501
     """Retrieve a collection of Protagonist objects
@@ -22,19 +21,25 @@ def protagonist_get(offset=None, limit=None):  # noqa: E501
 
     :rtype: None
     """
-    return 'do some magic!'
+    list = Database.getList(Protagonist)
+    for l in list :
+        Database.getDetailsFromOtherClassParameters(l)
+
+    return list
 
 
-def protagonist_post(body):  # noqa: E501
+def protagonist_post(protagonist):  # noqa: E501
     """Create Protagonist
 
      # noqa: E501
 
-    :param body:
-    :type body:
+    :param protagonist:
+    :type protagonist: dict | bytes
 
     :rtype: None
     """
+    if connexion.request.is_json:
+        protagonist = Protagonist.from_dict(connexion.request.get_json())  # noqa: E501
     return 'do some magic!'
 
 
@@ -48,7 +53,7 @@ def protagonists_protagonist_iddelete(protagonist_id):  # noqa: E501
 
     :rtype: None
     """
-    return 'do some magic!'
+    return Database.deleteObjectFromID(Protagonist,protagonist_id)
 
 
 def protagonists_protagonist_idget(protagonist_id):  # noqa: E501
@@ -61,9 +66,9 @@ def protagonists_protagonist_idget(protagonist_id):  # noqa: E501
 
     :rtype: None
     """
-    protagonist = Database.getProtagonistFromID(protagonist_id)
-
-    return protagonist
+    myObject = Database.getObjectFromID(Protagonist,protagonist_id)
+    Database.getDetailsFromOtherClassParameters(myObject)
+    return myObject
 
 
 def protagonists_protagonist_idpatch(protagonist_id, protagonist):  # noqa: E501

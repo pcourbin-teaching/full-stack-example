@@ -79,6 +79,8 @@ class ReferenceAuthor(Model):
         :param reference_id: The reference_id of this ReferenceAuthor.
         :type reference_id: int
         """
+        if reference_id is None:
+            raise ValueError("Invalid value for `reference_id`, must not be `None`")  # noqa: E501
 
         self._reference_id = reference_id
 
@@ -121,6 +123,8 @@ class ReferenceAuthor(Model):
         :param author_id: The author_id of this ReferenceAuthor.
         :type author_id: int
         """
+        if author_id is None:
+            raise ValueError("Invalid value for `author_id`, must not be `None`")  # noqa: E501
 
         self._author_id = author_id
 

@@ -99,6 +99,8 @@ class Protagonist(Model):
         :param id: The id of this Protagonist.
         :type id: int
         """
+        if id is None:
+            raise ValueError("Invalid value for `id`, must not be `None`")  # noqa: E501
 
         self._id = id
 
@@ -147,6 +149,8 @@ class Protagonist(Model):
         :param name: The name of this Protagonist.
         :type name: str
         """
+        if name is None:
+            raise ValueError("Invalid value for `name`, must not be `None`")  # noqa: E501
 
         self._name = name
 
