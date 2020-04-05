@@ -5,6 +5,10 @@ from DebatIDOAPI.models.error import Error  # noqa: E501
 from DebatIDOAPI.models.protagonist import Protagonist  # noqa: E501
 from DebatIDOAPI import util
 
+from flask import current_app
+import inspect
+
+from DebatIDOAPI.controllers.database_controller import Database
 
 def protagonist_get(offset=None, limit=None):  # noqa: E501
     """Retrieve a collection of Protagonist objects
@@ -26,8 +30,8 @@ def protagonist_post(body):  # noqa: E501
 
      # noqa: E501
 
-    :param body: 
-    :type body: 
+    :param body:
+    :type body:
 
     :rtype: None
     """
@@ -57,7 +61,9 @@ def protagonists_protagonist_idget(protagonist_id):  # noqa: E501
 
     :rtype: None
     """
-    return 'do some magic!'
+    protagonist = Database.getProtagonistFromID(protagonist_id)
+
+    return protagonist
 
 
 def protagonists_protagonist_idpatch(protagonist_id, protagonist):  # noqa: E501
@@ -67,7 +73,7 @@ def protagonists_protagonist_idpatch(protagonist_id, protagonist):  # noqa: E501
 
     :param protagonist_id: The Id of a Protagonist
     :type protagonist_id: int
-    :param protagonist: 
+    :param protagonist:
     :type protagonist: dict | bytes
 
     :rtype: None

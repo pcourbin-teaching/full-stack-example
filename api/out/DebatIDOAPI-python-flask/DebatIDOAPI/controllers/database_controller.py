@@ -31,6 +31,19 @@ class Database:
         return listQuotes
 
     @classmethod
+    def getProtagonistFromID(cls, id):
+        protagonist = None
+        cur = mydb.cursor(dictionary=True)
+        cur.execute("SELECT p.id, p.type, p.name, p.link, p.photo, p.dateUpdate FROM protagonist p WHERE p.id = "+str(id)+";")
+        for row in cur.fetchall() :
+            protagonist = Protagonist.from_dict(row)
+            if (protagonist.type == "person"):
+                protagonist.person = Database.getPersonFromReferenceID(protagonist.id)
+            elif (protagonist.type == "person"):
+                protagonist.company = Database.getCompanyFromReferenceID(protagonist.id)
+        return protagonist
+
+    @classmethod
     def getReferencesFromQuoteID(cls, id):
         list = []
         cur = mydb.cursor(dictionary=True)
@@ -56,11 +69,7 @@ class Database:
         cur = mydb.cursor(dictionary=True)
         cur.execute("SELECT p.id, p.type, p.name, p.link, p.photo, p.dateUpdate FROM protagonist p JOIN referenceAuthor ra ON p.id = ra.authorID JOIN reference r ON r.id = ra.referenceID WHERE r.id = "+str(id)+";")
         for row in cur.fetchall() :
-            protagonist = Protagonist.from_dict(row)
-            if (protagonist.type == "person"):
-                protagonist.person = Database.getPersonFromReferenceID(protagonist.id)
-            elif (protagonist.type == "person"):
-                protagonist.company = Database.getCompanyFromReferenceID(protagonist.id)
+            protagonist = Database.getProtagonistFromID(row['id'])
             list.append(protagonist)
         return list
 
