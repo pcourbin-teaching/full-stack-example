@@ -21,11 +21,7 @@ def reference_get(offset=None, limit=None):  # noqa: E501
 
     :rtype: None
     """
-    list = Database.getList(Reference)
-    for l in list :
-        Database.getDetailsFromOtherClassParameters(l)
-
-    return list
+    return Database.getListWithDetailsFromOtherClassParameters(Reference)
 
 
 def reference_post(reference):  # noqa: E501
@@ -66,9 +62,7 @@ def references_reference_idget(reference_id):  # noqa: E501
 
     :rtype: None
     """
-    myObject = Database.getObjectFromID(Reference,reference_id)
-    Database.getDetailsFromOtherClassParameters(myObject)
-    return myObject
+    return Database.getObjectFromIDWithDetailsFromOtherClassParameters(Reference,reference_id)
 
 
 def references_reference_idpatch(reference_id, reference):  # noqa: E501

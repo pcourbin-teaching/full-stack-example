@@ -21,12 +21,7 @@ def theme_get(offset=None, limit=None):  # noqa: E501
 
     :rtype: None
     """
-
-    list = Database.getList(Theme)
-    for l in list :
-        Database.getDetailsFromOtherClassParameters(l)
-
-    return list
+    return Database.getListWithDetailsFromOtherClassParameters(Theme)
 
 
 def theme_post(theme):  # noqa: E501
@@ -67,9 +62,7 @@ def themes_theme_idget(theme_id):  # noqa: E501
 
     :rtype: None
     """
-    myObject = Database.getObjectFromID(Theme,theme_id)
-    Database.getDetailsFromOtherClassParameters(myObject)
-    return myObject
+    return Database.getObjectFromIDWithDetailsFromOtherClassParameters(Theme,theme_id)
 
 
 def themes_theme_idpatch(theme_id, theme):  # noqa: E501
@@ -86,6 +79,4 @@ def themes_theme_idpatch(theme_id, theme):  # noqa: E501
     """
     if connexion.request.is_json:
         theme = Theme.from_dict(connexion.request.get_json())  # noqa: E501
-
-    Database.patchObjectFromID(theme, theme_id)
     return 'do some magic!'

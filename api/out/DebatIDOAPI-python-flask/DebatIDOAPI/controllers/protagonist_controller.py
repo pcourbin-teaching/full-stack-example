@@ -21,11 +21,7 @@ def protagonist_get(offset=None, limit=None):  # noqa: E501
 
     :rtype: None
     """
-    list = Database.getList(Protagonist)
-    for l in list :
-        Database.getDetailsFromOtherClassParameters(l)
-
-    return list
+    return Database.getListWithDetailsFromOtherClassParameters(Protagonist)
 
 
 def protagonist_post(protagonist):  # noqa: E501
@@ -66,9 +62,7 @@ def protagonists_protagonist_idget(protagonist_id):  # noqa: E501
 
     :rtype: None
     """
-    myObject = Database.getObjectFromID(Protagonist,protagonist_id)
-    Database.getDetailsFromOtherClassParameters(myObject)
-    return myObject
+    return Database.getObjectFromIDWithDetailsFromOtherClassParameters(Protagonist,protagonist_id)
 
 
 def protagonists_protagonist_idpatch(protagonist_id, protagonist):  # noqa: E501

@@ -323,6 +323,56 @@ paths:
       tags:
       - Quote
       x-openapi-router-controller: DebatIDOAPI.controllers.quote_controller
+  /quotes/{quoteID}/mains:
+    get:
+      description: This operation supports pagination
+      operationId: quotes_quote_id_mains_get
+      parameters:
+      - description: The Id of a Quote
+        explode: false
+        in: path
+        name: quoteID
+        required: true
+        schema:
+          minimum: 0
+          type: integer
+        style: simple
+      - description: The number of items to skip before returning the results
+        explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+        style: form
+      - description: The number of items to return
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 20
+          format: int32
+          maximum: 100
+          minimum: 1
+          type: integer
+        style: form
+      responses:
+        "200":
+          description: A list of childs quotes
+        default:
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/quote'
+                type: array
+          description: A list of quotes
+      summary: Get list of mains quotes supported by a specific quote
+      tags:
+      - Quote
+      x-openapi-router-controller: DebatIDOAPI.controllers.quote_controller
   /quotes/{quoteID}/supports:
     get:
       description: This operation supports pagination
@@ -369,7 +419,7 @@ paths:
                   $ref: '#/components/schemas/quote'
                 type: array
           description: A list of quotes
-      summary: Get list of supports quotes of specific quote
+      summary: Get list of supports quotes for a specific quote
       tags:
       - Quote
       x-openapi-router-controller: DebatIDOAPI.controllers.quote_controller

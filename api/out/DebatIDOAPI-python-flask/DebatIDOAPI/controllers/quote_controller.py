@@ -3,9 +3,7 @@ import six
 
 from DebatIDOAPI.models.error import Error  # noqa: E501
 from DebatIDOAPI.models.quote import Quote  # noqa: E501
-from DebatIDOAPI.models.reference import Reference  # noqa: E501
-from DebatIDOAPI.models.theme import Theme  # noqa: E501
-from DebatIDOAPI.models.protagonist import Protagonist  # noqa: E501
+from DebatIDOAPI.models.quote_link import QuoteLink  # noqa: E501
 from DebatIDOAPI import util
 
 from DebatIDOAPI.controllers.database_controller import Database
@@ -24,13 +22,7 @@ def quote_get(offset=None, limit=None):  # noqa: E501
 
     :rtype: None
     """
-    current_app.logger.debug("{} -- API_KEY : {}".format(inspect.stack()[0][3],connexion.request.headers['API_KEY']))
-
-    list = Database.getList(Quote)
-    for l in list :
-        Database.getDetailsFromOtherClassParameters(l)
-
-    return list
+    return Database.getListWithDetailsFromOtherClassParameters(Quote)
 
 
 def quote_post(quote):  # noqa: E501
@@ -48,8 +40,8 @@ def quote_post(quote):  # noqa: E501
     return 'do some magic!'
 
 
-def quotes_quote_id_supports_get(quote_id, offset=None, limit=None):  # noqa: E501
-    """Get list of supports quotes of specific quote
+def quotes_quote_id_mains_get(quote_id, offset=None, limit=None):  # noqa: E501
+    """Get list of mains quotes supported by a specific quote
 
     This operation supports pagination # noqa: E501
 
@@ -62,7 +54,24 @@ def quotes_quote_id_supports_get(quote_id, offset=None, limit=None):  # noqa: E5
 
     :rtype: None
     """
-    return 'do some magic!'
+    return Database.getListFromOtherIDWithDetailsFromOtherClassParameters(QuoteLink, "quoteMains", quote_id)
+
+
+def quotes_quote_id_supports_get(quote_id, offset=None, limit=None):  # noqa: E501
+    """Get list of supports quotes for a specific quote
+
+    This operation supports pagination # noqa: E501
+
+    :param quote_id: The Id of a Quote
+    :type quote_id: int
+    :param offset: The number of items to skip before returning the results
+    :type offset: int
+    :param limit: The number of items to return
+    :type limit: int
+
+    :rtype: None
+    """
+    return Database.getListFromOtherIDWithDetailsFromOtherClassParameters(QuoteLink, "quoteSupports", quote_id)
 
 
 def quotes_quote_iddelete(quote_id):  # noqa: E501
@@ -88,9 +97,7 @@ def quotes_quote_idget(quote_id):  # noqa: E501
 
     :rtype: None
     """
-    myObject = Database.getObjectFromID(Quote,quote_id)
-    Database.getDetailsFromOtherClassParameters(myObject)
-    return myObject
+    return Database.getObjectFromIDWithDetailsFromOtherClassParameters(Quote,quote_id)
 
 
 def quotes_quote_idpatch(quote_id, quote):  # noqa: E501

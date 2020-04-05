@@ -142,11 +142,11 @@ components:
         quoteMains:
           type: array
           items:
-            $ref: '#/components/schemas/quoteLink'
+            $ref: '#/components/schemas/quote'
         quoteSupports:
           type: array
           items:
-            $ref: '#/components/schemas/quoteLink'
+            $ref: '#/components/schemas/quote'
       example:
         title: Faut-il instaurer un revenu de base ?
         typeID: 12
@@ -536,6 +536,7 @@ paths:
       responses:
         '201':
           description: Created
+
   /quotes/{quoteID}/:
     get:
       summary: Retrieve a Quote object
@@ -595,9 +596,26 @@ paths:
           description: Not Found
         default:
           $ref: '#/components/responses/GeneralError'
+
   /quotes/{quoteID}/supports:
     get:
-      summary: Get list of supports quotes of specific quote
+      summary: Get list of supports quotes for a specific quote
+      description: This operation supports pagination
+      tags:
+        - Quote
+      parameters:
+        - $ref: '#/components/parameters/quoteIDParam'
+        - $ref: '#/components/parameters/offsetParam'
+        - $ref: '#/components/parameters/limitParam'
+      responses:
+        '200':
+          description: A list of childs quotes
+        default:
+          $ref: '#/components/responses/quoteList'
+
+  /quotes/{quoteID}/mains:
+    get:
+      summary: Get list of mains quotes supported by a specific quote
       description: This operation supports pagination
       tags:
         - Quote
@@ -638,6 +656,7 @@ paths:
       responses:
         '201':
           description: Created
+
   /references/{referenceID}/:
     get:
       summary: Retrieve a Reference object
