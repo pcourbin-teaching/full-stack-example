@@ -8,18 +8,7 @@ from DebatIDOAPI import util
 from flask import current_app
 import inspect
 
-import os
-from sqlalchemy.engine.url import make_url
-import mysql.connector
-
-url = make_url(os.getenv('DATABASE_URL'))
-mydb = mysql.connector.connect(host=url.host,user=url.username,passwd=url.password,database=url.database)
-
-def row2dict(row):
-    d = {}
-    for column in row.__table__.columns:
-        d[column.name] = str(getattr(row, column.name))
-    return d
+from DebatIDOAPI.controllers.database_controller import Database
 
 def quote_get(offset=None, limit=None):  # noqa: E501
     """Retrieve a collection of Quote objects
@@ -34,20 +23,11 @@ def quote_get(offset=None, limit=None):  # noqa: E501
     :rtype: None
     """
     current_app.logger.debug("{} -- API_KEY : {}".format(inspect.stack()[0][3],connexion.request.headers['API_KEY']))
-    quoteList = []
-    curQuote = mydb.cursor(dictionary=True)
-    curQuote.execute("SELECT q.id as quoteID, q.title as title, q.details as details, q.typeID as typeID, qt.title as typeTitle, q.dateUpdate as dateUpdate FROM quote q JOIN quoteType qt ON q.typeID = qt.id;")
-    for rowQuote in curQuote.fetchall() :
-        curTheme = mydb.cursor(dictionary=True)
-        curTheme.execute("SELECT t.id as id, t.title as title FROM theme t JOIN quoteTheme qt ON t.id = qt.themeID WHERE qt.quoteID = "+str(rowQuote['quoteID'])+";")
-        themeList = []
-        for rowTheme in curTheme.fetchall() :
-            themeList.append(rowTheme)
-        rowQuote['themes'] = themeList
+    quoteList = Database.getListQuotes()
 
-        quoteList.append(rowQuote)
-    #for j in mycursor:
-    #   quote_list.append(Quote(j))
+    for q in quoteList :
+        q.themes = Database.getThemesFromQuoteID(q.id)
+        q.references = Database.getReferencesFromQuoteID(q.id)
 
     return quoteList
 

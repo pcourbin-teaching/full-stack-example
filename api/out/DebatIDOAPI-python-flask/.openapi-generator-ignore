@@ -26,4 +26,5 @@
 DebatIDOAPI/__main__.py
 DebatIDOAPI/controllers/quote_controller.py
 DebatIDOAPI/controllers/security_controller.py
+DebatIDOAPI/controllers/database_controller.py
 requirements.txt
