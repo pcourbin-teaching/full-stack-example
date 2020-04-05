@@ -1,84 +1,128 @@
 # coding: utf-8
 
 from __future__ import absolute_import
+import unittest
 
 from flask import json
 from six import BytesIO
 
-from DebatIDOAPI.models.error_model import ErrorModel  # noqa: E501
-from DebatIDOAPI.models.quote_model import QuoteModel  # noqa: E501
-from DebatIDOAPI.models.source_model import SourceModel  # noqa: E501
+from DebatIDOAPI.models.error import Error  # noqa: E501
+from DebatIDOAPI.models.quote import Quote  # noqa: E501
 from DebatIDOAPI.test import BaseTestCase
 
 
 class TestQuoteController(BaseTestCase):
     """QuoteController integration test stubs"""
 
-    def test_quotes_id_quote_childs_get(self):
-        """Test case for quotes_id_quote_childs_get
+    def test_quote_get(self):
+        """Test case for quote_get
 
-        Get list of childs of specific quote
+        Retrieve a collection of Quote objects
         """
         query_string = [('offset', 1),
-                        ('limit', 100)]
+                        ('limit', 20)]
+        headers = { 
+            'Accept': 'application/json',
+            'ApiKeyAuth': 'special-key',
+        }
         response = self.client.open(
-            '/quotes/{idQuote}/childs'.format(id_quote=1),
+            '/quote',
             method='GET',
+            headers=headers,
             query_string=query_string)
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
 
-    def test_quotes_id_quote_delete(self):
-        """Test case for quotes_id_quote_delete
+    def test_quote_post(self):
+        """Test case for quote_post
 
-        Delete one specific quote
+        Create Quote
         """
+        body = {}
+        headers = { 
+            'Content-Type': 'application/json',
+            'ApiKeyAuth': 'special-key',
+        }
         response = self.client.open(
-            '/quotes/{idQuote}/'.format(id_quote=1),
-            method='DELETE')
+            '/quote',
+            method='POST',
+            headers=headers,
+            data=json.dumps(body),
+            content_type='application/json')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
 
-    def test_quotes_id_quote_get(self):
-        """Test case for quotes_id_quote_get
+    def test_quotes_quote_id_supports_get(self):
+        """Test case for quotes_quote_id_supports_get
 
-        Get one specific quote
-        """
-        response = self.client.open(
-            '/quotes/{idQuote}/'.format(id_quote=1),
-            method='GET')
-        self.assert200(response,
-                       'Response body is : ' + response.data.decode('utf-8'))
-
-    def test_quotes_id_quote_parents_get(self):
-        """Test case for quotes_id_quote_parents_get
-
-        Get list of parents of specific quote
+        Get list of supports quotes of specific quote
         """
         query_string = [('offset', 1),
-                        ('limit', 100)]
+                        ('limit', 20)]
+        headers = { 
+            'Accept': 'application/json',
+            'ApiKeyAuth': 'special-key',
+        }
         response = self.client.open(
-            '/quotes/{idQuote}/parents'.format(id_quote=1),
+            '/quotes/{quote_id}/supports'.format(quote_id=1),
             method='GET',
+            headers=headers,
             query_string=query_string)
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
 
-    def test_quotes_id_quote_sources_get(self):
-        """Test case for quotes_id_quote_sources_get
+    def test_quotes_quote_iddelete(self):
+        """Test case for quotes_quote_iddelete
 
-        Get list of sources of specific quote
+        Delete Quote object
         """
-        query_string = [('offset', 1),
-                        ('limit', 100)]
+        headers = { 
+            'Accept': 'application/json',
+            'ApiKeyAuth': 'special-key',
+        }
         response = self.client.open(
-            '/quotes/{idQuote}/sources'.format(id_quote=1),
+            '/quotes/{quote_id}'.format(quote_id=1),
+            method='DELETE',
+            headers=headers)
+        self.assert200(response,
+                       'Response body is : ' + response.data.decode('utf-8'))
+
+    def test_quotes_quote_idget(self):
+        """Test case for quotes_quote_idget
+
+        Retrieve a Quote object
+        """
+        headers = { 
+            'Accept': 'application/json',
+            'ApiKeyAuth': 'special-key',
+        }
+        response = self.client.open(
+            '/quotes/{quote_id}'.format(quote_id=1),
             method='GET',
-            query_string=query_string)
+            headers=headers)
+        self.assert200(response,
+                       'Response body is : ' + response.data.decode('utf-8'))
+
+    def test_quotes_quote_idpatch(self):
+        """Test case for quotes_quote_idpatch
+
+        Update Quote object
+        """
+        quote = {}
+        headers = { 
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'ApiKeyAuth': 'special-key',
+        }
+        response = self.client.open(
+            '/quotes/{quote_id}'.format(quote_id=1),
+            method='PATCH',
+            headers=headers,
+            data=json.dumps(quote),
+            content_type='application/json')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
 
 
 if __name__ == '__main__':
-    import unittest
     unittest.main()

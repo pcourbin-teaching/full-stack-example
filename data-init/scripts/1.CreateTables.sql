@@ -5,7 +5,7 @@ DROP TABLE IF EXISTS company;
 DROP TABLE IF EXISTS person;
 DROP TABLE IF EXISTS referenceAuthor;
 DROP TABLE IF EXISTS quoteAuthor;
-DROP TABLE IF EXISTS entity;
+DROP TABLE IF EXISTS protagonist;
 DROP TABLE IF EXISTS quoteReference;
 DROP TABLE IF EXISTS quoteTheme;
 DROP TABLE IF EXISTS theme;
@@ -25,7 +25,7 @@ CREATE TABLE `referenceType` (
 CREATE TABLE `reference` (
   `id` INT AUTO_INCREMENT NOT NULL,
   `title` TEXT NOT NULL,
-  `text` LONGTEXT NULL,
+  `details` LONGTEXT NULL,
   `url` LONGTEXT NULL,
   `date` DATE NULL,
   `typeID` INT NOT NULL,
@@ -53,7 +53,7 @@ CREATE TABLE `quoteType` (
 CREATE TABLE `quote` (
   `id` INT AUTO_INCREMENT NOT NULL,
   `title` TEXT NOT NULL,
-  `text` LONGTEXT NULL,
+  `details` LONGTEXT NULL,
   `typeID` INT NOT NULL,
   `dateUpdate` DATETIME DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
@@ -131,7 +131,7 @@ CREATE TABLE `quoteReference` (
     ON UPDATE NO ACTION
 ) CHARACTER SET utf8mb4;
 
-CREATE TABLE `entity` (
+CREATE TABLE `protagonist` (
   `id` INT AUTO_INCREMENT NOT NULL,
   `type` ENUM('person','company'),
   `name` TEXT NOT NULL,
@@ -139,11 +139,11 @@ CREATE TABLE `entity` (
   `photo` TEXT NULL,
   `dateUpdate` DATETIME DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  INDEX `I_entity_idx` (`id` ASC)
+  INDEX `I_protagonist_idx` (`id` ASC)
 ) CHARACTER SET utf8mb4;
 
-CREATE TRIGGER TR_entity_dateUpdate_updater
-BEFORE UPDATE ON `entity`
+CREATE TRIGGER TR_protagonist_dateUpdate_updater
+BEFORE UPDATE ON `protagonist`
     FOR EACH ROW
 		SET new.dateUpdate = NOW();
 
@@ -155,7 +155,7 @@ CREATE TABLE `quoteAuthor` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `FK_quoteauthorID` FOREIGN KEY (`authorID`)
-    REFERENCES `entity` (`id`)
+    REFERENCES `protagonist` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
 ) CHARACTER SET utf8mb4;
@@ -168,20 +168,21 @@ CREATE TABLE `referenceAuthor` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `FK_referenceauthorID` FOREIGN KEY (`authorID`)
-    REFERENCES `entity` (`id`)
+    REFERENCES `protagonist` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
 ) CHARACTER SET utf8mb4;
 
 CREATE TABLE `person` (
-  `id` INT NOT NULL,
+  `id` INT AUTO_INCREMENT NOT NULL,
+  `protagonistID` INT NOT NULL,
   `surname` TEXT NULL,
   `role` TEXT NULL,
   `dateUpdate` DATETIME DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   INDEX `I_person_idx` (`id` ASC),
-  CONSTRAINT `FK_id_person_entity` FOREIGN KEY (`id`)
-    REFERENCES `entity` (`id`)
+  CONSTRAINT `FK_id_person_protagonist` FOREIGN KEY (`protagonistID`)
+    REFERENCES `protagonist` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
 ) CHARACTER SET utf8mb4;
@@ -191,14 +192,20 @@ BEFORE UPDATE ON `person`
     FOR EACH ROW
 		SET new.dateUpdate = NOW();
 
+CREATE TRIGGER TR_person_id_updater
+BEFORE UPDATE ON `person`
+    FOR EACH ROW
+		SET new.id = new.protagonistID;
+
 CREATE TABLE `company` (
-  `id` INT NOT NULL,
+  `id` INT AUTO_INCREMENT NOT NULL,
+  `protagonistID` INT NOT NULL,
   `siret` TEXT NULL,
   `dateUpdate` DATETIME DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   INDEX `I_company_idx` (`id` ASC),
-  CONSTRAINT `FK_id_company_entity` FOREIGN KEY (`id`)
-    REFERENCES `entity` (`id`)
+  CONSTRAINT `FK_id_company_protagonist` FOREIGN KEY (`protagonistID`)
+    REFERENCES `protagonist` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
 ) CHARACTER SET utf8mb4;
@@ -207,3 +214,8 @@ CREATE TRIGGER TR_company_dateUpdate_updater
 BEFORE UPDATE ON `company`
     FOR EACH ROW
 		SET new.dateUpdate = NOW();
+
+CREATE TRIGGER TR_company_id_updater
+BEFORE UPDATE ON `company`
+    FOR EACH ROW
+		SET new.id = new.protagonistID;

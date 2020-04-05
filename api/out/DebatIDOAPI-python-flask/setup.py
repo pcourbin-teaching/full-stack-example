@@ -5,6 +5,7 @@ from setuptools import setup, find_packages
 
 NAME = "DebatIDOAPI"
 VERSION = "1.0.0"
+
 # To install the library, run the following
 #
 # python setup.py install
@@ -12,7 +13,11 @@ VERSION = "1.0.0"
 # prerequisite: setuptools
 # http://pypi.python.org/pypi/setuptools
 
-REQUIRES = ["connexion"]
+REQUIRES = [
+    "connexion>=2.0.2",
+    "swagger-ui-bundle>=0.0.2",
+    "python_dateutil>=2.6.0"
+]
 
 setup(
     name=NAME,
@@ -20,10 +25,10 @@ setup(
     description="Débats IDO API",
     author_email="",
     url="",
-    keywords=["Swagger", "Débats IDO API"],
+    keywords=["OpenAPI", "Débats IDO API"],
     install_requires=REQUIRES,
     packages=find_packages(),
-    package_data={'': ['swagger/swagger.yaml']},
+    package_data={'': ['openapi/openapi.yaml']},
     include_package_data=True,
     entry_points={
         'console_scripts': ['DebatIDOAPI=DebatIDOAPI.__main__:main']},
@@ -31,3 +36,4 @@ setup(
     API of Débats IDO Project
     """
 )
+

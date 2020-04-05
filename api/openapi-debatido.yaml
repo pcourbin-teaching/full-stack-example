@@ -1,0 +1,927 @@
+# OpenAPI version identifier - required for OpenAPI 3.0 domains
+openapi: 3.0.0
+
+#######################
+# Optional info section
+#######################
+info:
+  title: Débats IDO API
+  description: API of Débats IDO Project
+  version: '1.0.0'
+
+servers:
+  - url: /
+    description: Optional server description, e.g. Internal staging server for testing
+
+components:
+
+  ####################
+  # Security
+  ####################
+  securitySchemes:
+    ApiKeyAuth:        # arbitrary name for the security scheme
+      type: apiKey
+      in: header       # can be "header", "query" or "cookie"
+      name: API_KEY  # name of the header, query parameter or cookie
+
+  ####################
+  # Common data models
+  ####################
+  schemas:
+    error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+
+    referenceType:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        title:
+          type: string
+      example:
+        id: 42
+        title: Livre
+
+    referenceTypeNew:
+      $ref: '#/components/schemas/referenceType'
+      required:
+        - title
+
+    reference:
+      type: object
+      required:
+        - title
+        - typeID
+      properties:
+        id:
+          type: integer
+          format: int32
+        title:
+          type: string
+        details:
+          type: string
+        url:
+          type: string
+        date:
+          type: string
+        typeID:
+          type: integer
+          format: int32
+        typeTitle:
+          type: string
+        reliability:
+          type: integer
+          format: int32
+        dateUpdate:
+          type: string
+        authors:
+          type: array
+          items:
+            $ref: '#/components/schemas/protagonist'
+      example:
+        id: 42
+        title: Livre
+
+    referenceNew:
+      $ref: '#/components/schemas/reference'
+      required:
+        - title
+        - typeID
+
+    quoteType:
+      type: object
+      required:
+        - title
+      properties:
+        id:
+          type: integer
+          format: int32
+        title:
+          type: string
+      example:
+        id: 42
+        title: Opinion
+
+    quoteTypeNew:
+      $ref: '#/components/schemas/quoteType'
+      required:
+        - title
+
+    quote:
+      type: object
+      required:
+        - title
+        - typeID
+      properties:
+        id:
+          type: integer
+          format: int32
+        title:
+          type: string
+        details:
+          type: string
+        typeID:
+          type: integer
+          format: int32
+        typeTitle:
+          type: string
+        dateUpdate:
+          type: string
+        themes:
+          type: array
+          items:
+            $ref: '#/components/schemas/theme'
+        references:
+          type: array
+          items:
+            $ref: '#/components/schemas/reference'
+        authors:
+          type: array
+          items:
+            $ref: '#/components/schemas/protagonist'
+        quoteMains:
+          type: array
+          items:
+            $ref: '#/components/schemas/quote'
+        quoteSupports:
+          type: array
+          items:
+            $ref: '#/components/schemas/quote'
+      example:
+        title: Faut-il instaurer un revenu de base ?
+        typeID: 12
+
+    quoteNew:
+      required:
+        - title
+        - typeID
+      $ref: '#/components/schemas/quote'
+
+    quoteLinkType:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        title:
+          type: string
+      example:
+        id: 2
+        title: Contre
+
+    quoteLinkTypeNew:
+      $ref: '#/components/schemas/quoteLinkType'
+      required:
+        - title
+
+    quoteLink:
+      type: object
+      properties:
+        quoteMainID:
+          type: integer
+          format: int32
+        quoteMain:
+          $ref: '#/components/schemas/quote'
+        quoteSupportID:
+          type: integer
+          format: int32
+        quoteSupport:
+          $ref: '#/components/schemas/quote'
+        typeID:
+          type: integer
+          format: int32
+        typeTitle:
+          type: string
+        dateUpdate:
+          type: string
+      example:
+        quoteMainID: 1
+        quoteSupportID: 2
+        typeID: 1
+
+    quoteLinkNew:
+      $ref: '#/components/schemas/quoteLink'
+      required:
+        - quoteMainID
+        - quoteSupportID
+        - typeID
+
+    theme:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        title:
+          type: string
+      example:
+        id: 1
+        title: Économique
+
+    themeNew:
+      $ref: '#/components/schemas/theme'
+      required:
+        - title
+
+    quoteTheme:
+      type: object
+      properties:
+        themeID:
+          type: integer
+          format: int32
+        theme:
+          $ref: '#/components/schemas/theme'
+        quoteID:
+          type: integer
+          format: int32
+        quote:
+          $ref: '#/components/schemas/quote'
+      example:
+        themeID: 3
+        quoteID: 1
+
+    quoteThemeNew:
+      $ref: '#/components/schemas/quoteTheme'
+      required:
+        - themeID
+        - quoteID
+
+    quoteReference:
+      type: object
+      required:
+        - referenceID
+        - quoteID
+      properties:
+        quoteID:
+          type: integer
+          format: int32
+        quote:
+          $ref: '#/components/schemas/quote'
+        referenceID:
+          type: integer
+          format: int32
+        reference:
+          $ref: '#/components/schemas/reference'
+
+    quoteReferenceNew:
+      $ref: '#/components/schemas/quoteReference'
+      required:
+        - quoteID
+        - referenceID
+
+    protagonist:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        type:
+          type: string
+          enum: [person, company]
+        name:
+          type: string
+        link:
+          type: string
+        photo:
+          type: string
+        dateUpdate:
+          type: string
+        person:
+          $ref: '#/components/schemas/person'
+        company:
+          $ref: '#/components/schemas/company'
+
+    protagonistNew:
+      $ref: '#/components/schemas/protagonist'
+      required:
+        - type
+        - name
+
+    quoteAuthor:
+      type: object
+      properties:
+        quoteID:
+          type: integer
+          format: int32
+        quote:
+          $ref: '#/components/schemas/quote'
+        authorID:
+          type: integer
+          format: int32
+        author:
+          $ref: '#/components/schemas/protagonist'
+
+    quoteAuthorNew:
+      $ref: '#/components/schemas/quoteAuthor'
+      required:
+        - quoteID
+        - authorID
+
+    referenceAuthor:
+      type: object
+      properties:
+        referenceID:
+          type: integer
+          format: int32
+        reference:
+          $ref: '#/components/schemas/reference'
+        authorID:
+          type: integer
+          format: int32
+        author:
+          $ref: '#/components/schemas/protagonist'
+
+    referenceAuthorNew:
+      $ref: '#/components/schemas/referenceAuthor'
+      required:
+        - referenceID
+        - authorID
+
+    person:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        protagonistID:
+          type: integer
+          format: int32
+        surname:
+          type: string
+        role:
+          type: string
+        dateUpdate:
+          type: string
+
+    personNew:
+      $ref: '#/components/schemas/person'
+      required:
+        - protagonistID
+
+
+    company:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        protagonistID:
+          type: integer
+          format: int32
+        siret:
+          type: string
+        dateUpdate:
+          type: string
+
+    companyNew:
+      $ref: '#/components/schemas/company'
+      required:
+        - protagonistID
+
+
+
+  ####################
+  # Common parameters
+  ####################
+  parameters:
+    quoteIDParam:
+      name: quoteID
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 0
+      description: The Id of a Quote
+
+    referenceIDParam:
+      name: referenceID
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 0
+      description: The Id of a Reference
+
+    themeIDParam:
+      name: themeID
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 0
+      description: The Id of a Theme
+
+    protagonistIDParam:
+      name: protagonistID
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 0
+      description: The Id of a Protagonist
+
+    offsetParam:
+      name: offset
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+      description: The number of items to skip before returning the results
+
+    limitParam:
+      in: query
+      name: limit
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 100
+        default: 20
+      description: The number of items to return
+
+  #######################
+  # Common request bodies
+  #######################
+
+
+  ####################
+  # Common responses
+  ####################
+  responses:
+    rateLimitHeader:
+      description: Default Header for Rate Limit
+      headers:
+        X-RateLimit-Limit:
+          $ref: '#/components/headers/X-RateLimit-Limit'
+        X-RateLimit-Remaining:
+          $ref: '#/components/headers/X-RateLimit-Remaining'
+
+    GeneralError:
+      description: An error occurred
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+
+    quote:
+      description: A quote
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/quote'
+
+    quoteList:
+      description: A list of quotes
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/quote'
+
+    reference:
+      description: A reference
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/reference'
+
+    referenceList:
+      description: A list of references
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/reference'
+
+    theme:
+      description: A theme
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/theme'
+
+    themeList:
+      description: A list of themes
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/theme'
+
+    protagonist:
+      description: A protagonist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/protagonist'
+
+    protagonistList:
+      description: A list of protagonists
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/protagonist'
+
+  #########################
+  # Common headers
+  # (except request headers - they are defined as parameters)
+  #########################
+  headers:
+    X-RateLimit-Limit:
+      description: Request limit per hour
+      schema:
+        type: integer
+      example: 100
+    X-RateLimit-Remaining:
+      description: Remaining requests for the hour
+      schema:
+        type: integer
+      example: 94
+
+#######################
+# Security
+#######################
+security:
+  - ApiKeyAuth: []     # use the same name as under securitySchemes
+
+#######################
+# Common path items
+#######################
+paths:
+  /quote:
+    get:
+      summary: Retrieve a collection of Quote objects
+      description: This operation supports pagination
+      tags:
+        - Quote
+      parameters:
+        - $ref: '#/components/parameters/offsetParam'
+        - $ref: '#/components/parameters/limitParam'
+      responses:
+        '200':
+          description: A list of quotes
+        default:
+          $ref: '#/components/responses/quoteList'
+    post:
+      summary: Create Quote
+      tags:
+        - Quote
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/quoteNew'
+      responses:
+        '201':
+          description: Created
+  /quotes/{quoteID}/:
+    get:
+      summary: Retrieve a Quote object
+      description: Test
+      tags:
+        - Quote
+      parameters:
+        - $ref: '#/components/parameters/quoteIDParam'
+      responses:
+        '200':
+          description: A specific quote
+        default:
+          $ref: '#/components/responses/quote'
+    patch:
+      summary: Update Quote object
+      description: Test
+      tags:
+        - Quote
+      parameters:
+        - $ref: '#/components/parameters/quoteIDParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/quote'
+      responses:
+        '200':
+          description: Success
+        '202':
+          description: Accepted
+        '204':
+          description: Request fulfilled, nothing follows
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        default:
+          $ref: '#/components/responses/GeneralError'
+    delete:
+      summary: Delete Quote object
+      description: Test
+      tags:
+        - Quote
+      parameters:
+        - $ref: '#/components/parameters/quoteIDParam'
+      responses:
+        '200':
+          description: Success
+        '202':
+          description: Accepted
+        '204':
+          description: Request fulfilled, nothing follows
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        default:
+          $ref: '#/components/responses/GeneralError'
+  /quotes/{quoteID}/supports:
+    get:
+      summary: Get list of supports quotes of specific quote
+      description: This operation supports pagination
+      tags:
+        - Quote
+      parameters:
+        - $ref: '#/components/parameters/quoteIDParam'
+        - $ref: '#/components/parameters/offsetParam'
+        - $ref: '#/components/parameters/limitParam'
+      responses:
+        '200':
+          description: A list of childs quotes
+        default:
+          $ref: '#/components/responses/quoteList'
+
+  /reference:
+    get:
+      summary: Retrieve a collection of Reference objects
+      description: This operation supports pagination
+      tags:
+        - Reference
+      parameters:
+        - $ref: '#/components/parameters/offsetParam'
+        - $ref: '#/components/parameters/limitParam'
+      responses:
+        '200':
+          description: A list of references
+        default:
+          $ref: '#/components/responses/referenceList'
+    post:
+      summary: Create Reference
+      tags:
+        - Reference
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/referenceNew'
+      responses:
+        '201':
+          description: Created
+  /references/{referenceID}/:
+    get:
+      summary: Retrieve a Reference object
+      description: Test
+      tags:
+        - Reference
+      parameters:
+        - $ref: '#/components/parameters/referenceIDParam'
+      responses:
+        '200':
+          description: A specific reference
+        default:
+          $ref: '#/components/responses/reference'
+    patch:
+      summary: Update Reference object
+      description: Test
+      tags:
+        - Reference
+      parameters:
+        - $ref: '#/components/parameters/referenceIDParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/reference'
+      responses:
+        '200':
+          description: Success
+        '202':
+          description: Accepted
+        '204':
+          description: Request fulfilled, nothing follows
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        default:
+          $ref: '#/components/responses/GeneralError'
+    delete:
+      summary: Delete Reference object
+      description: Test
+      tags:
+        - Reference
+      parameters:
+        - $ref: '#/components/parameters/referenceIDParam'
+      responses:
+        '200':
+          description: Success
+        '202':
+          description: Accepted
+        '204':
+          description: Request fulfilled, nothing follows
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        default:
+          $ref: '#/components/responses/GeneralError'
+
+  /theme:
+    get:
+      summary: Retrieve a collection of Theme objects
+      description: This operation supports pagination
+      tags:
+        - Theme
+      parameters:
+        - $ref: '#/components/parameters/offsetParam'
+        - $ref: '#/components/parameters/limitParam'
+      responses:
+        '200':
+          description: A list of themes
+        default:
+          $ref: '#/components/responses/themeList'
+    post:
+      summary: Create Theme
+      tags:
+        - Theme
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/themeNew'
+      responses:
+        '201':
+          description: Created
+  /themes/{themeID}/:
+    get:
+      summary: Retrieve a Theme object
+      description: Test
+      tags:
+        - Theme
+      parameters:
+        - $ref: '#/components/parameters/themeIDParam'
+      responses:
+        '200':
+          description: A specific theme
+        default:
+          $ref: '#/components/responses/theme'
+    patch:
+      summary: Update Theme object
+      description: Test
+      tags:
+        - Theme
+      parameters:
+        - $ref: '#/components/parameters/themeIDParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/theme'
+      responses:
+        '200':
+          description: Success
+        '202':
+          description: Accepted
+        '204':
+          description: Request fulfilled, nothing follows
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        default:
+          $ref: '#/components/responses/GeneralError'
+    delete:
+      summary: Delete Theme object
+      description: Test
+      tags:
+        - Theme
+      parameters:
+        - $ref: '#/components/parameters/themeIDParam'
+      responses:
+        '200':
+          description: Success
+        '202':
+          description: Accepted
+        '204':
+          description: Request fulfilled, nothing follows
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        default:
+          $ref: '#/components/responses/GeneralError'
+
+  /protagonist:
+    get:
+      summary: Retrieve a collection of Protagonist objects
+      description: This operation supports pagination
+      tags:
+        - Protagonist
+      parameters:
+        - $ref: '#/components/parameters/offsetParam'
+        - $ref: '#/components/parameters/limitParam'
+      responses:
+        '200':
+          description: A list of protagonists
+        default:
+          $ref: '#/components/responses/protagonistList'
+    post:
+      summary: Create Protagonist
+      tags:
+        - Protagonist
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/protagonistNew'
+      responses:
+        '201':
+          description: Created
+  /protagonists/{protagonistID}/:
+    get:
+      summary: Retrieve a Protagonist object
+      description: Test
+      tags:
+        - Protagonist
+      parameters:
+        - $ref: '#/components/parameters/protagonistIDParam'
+      responses:
+        '200':
+          description: A specific protagonist
+        default:
+          $ref: '#/components/responses/protagonist'
+    patch:
+      summary: Update Protagonist object
+      description: Test
+      tags:
+        - Protagonist
+      parameters:
+        - $ref: '#/components/parameters/protagonistIDParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/protagonist'
+      responses:
+        '200':
+          description: Success
+        '202':
+          description: Accepted
+        '204':
+          description: Request fulfilled, nothing follows
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        default:
+          $ref: '#/components/responses/GeneralError'
+    delete:
+      summary: Delete Protagonist object
+      description: Test
+      tags:
+        - Protagonist
+      parameters:
+        - $ref: '#/components/parameters/protagonistIDParam'
+      responses:
+        '200':
+          description: Success
+        '202':
+          description: Accepted
+        '204':
+          description: Request fulfilled, nothing follows
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        default:
+          $ref: '#/components/responses/GeneralError'

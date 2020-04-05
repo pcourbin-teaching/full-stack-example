@@ -13,9 +13,6 @@ servers:
   - url: /
     description: Optional server description, e.g. Internal staging server for testing
 
-schemes:
-  - http
-
 components:
 
   ####################

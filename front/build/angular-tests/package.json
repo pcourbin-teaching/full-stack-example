@@ -1,0 +1,17 @@
+{
+  "scripts": {
+    "generate:api": "openapi-generator generate -g typescript-angular -i ./openapi-debatsido-v2.yaml -o ./openapi",
+    "prestart": "npm run generate:api",
+    "start": "ng serve",
+    "prebuild": "npm run generate:api",
+    "build": "ng build"
+  },
+  "dependencies": {
+    "@angular/cli": "^9.1.0",
+    "@openapitools/openapi-generator-cli": "^1.0.12-4.3.0"
+  },
+  "devDependencies": {
+    "ng-openapi-gen": "^0.10.0",
+    "ng-swagger-gen": "^2.2.0"
+  }
+}
