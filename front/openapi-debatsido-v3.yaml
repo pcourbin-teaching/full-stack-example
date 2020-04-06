@@ -502,8 +502,8 @@ components:
 #######################
 # Security
 #######################
-#security:
-#  - ApiKeyAuth: []     # use the same name as under securitySchemes
+security:
+  - ApiKeyAuth: []     # use the same name as under securitySchemes
 
 #######################
 # Common path items

@@ -1,0 +1,22 @@
+<p>theme works!</p>
+
+<h1>Themes</h1>
+<!--
+<table mat-table [dataSource]="themes" class="mat-elevation-z8">
+
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef> id </th>
+    <td mat-cell *matCellDef="let themes"> {{theme.id}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="title">
+    <th mat-header-cell *matHeaderCellDef> Title </th>
+    <td mat-cell *matCellDef="let themes"> {{theme.title}} </td>
+  </ng-container>
+</table>
+-->
+<div *ngFor="let theme of themes">
+  <p>Title: {{theme.title}}</p>
+  <!-- <img [src]="article.imageUrl" width="400" alt="Article image" /> -->
+  <p>ID: {{theme.id}}</p>
+</div>

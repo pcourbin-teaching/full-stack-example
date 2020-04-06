@@ -10,3 +10,4 @@ mysql-connector-python
 pytz
 sqlalchemy
 flask-sqlalchemy
+flask-cors

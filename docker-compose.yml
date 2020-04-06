@@ -33,11 +33,11 @@ services:
 
   front:
     image: pcourbin/debatido_front:0.1.0
-    build: ./front
+    build: ./front/debatsido
     environment:
-       API_URL: http://api:3000
+       API_BASE_PATH: http://api:3000
     ports:
-      - 3000:3000
+      - 3000:4200
     depends_on:
       - db
       - api
