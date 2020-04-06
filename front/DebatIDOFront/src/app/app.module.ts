@@ -23,6 +23,7 @@ import { ThemeTableComponent } from './theme-table/theme-table.component';
 import { ProtagonistTableComponent } from './protagonist-table/protagonist-table.component';
 import { QuoteTableComponent } from './quote-table/quote-table.component';
 import { ReferenceTableComponent } from './reference-table/reference-table.component';
+import { QuoteGraphComponent } from './quote-graph/quote-graph.component';
 
 
 
@@ -32,7 +33,8 @@ import { ReferenceTableComponent } from './reference-table/reference-table.compo
     ThemeTableComponent,
     ProtagonistTableComponent,
     QuoteTableComponent,
-    ReferenceTableComponent
+    ReferenceTableComponent,
+    QuoteGraphComponent
   ],
   imports: [
     BrowserModule,

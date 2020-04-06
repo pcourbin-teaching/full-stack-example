@@ -2,7 +2,7 @@
 version: '3'
 services:
   api:
-    image: pcourbin/debatido_api:0.1.0
+    image: pcourbin/debatsido_api:0.1.0
     build: ./DebatIDOAPI
     volumes:
      - ./DebatIDOAPI/DebatIDOAPI:/usr/src/app/DebatIDOAPI #For development

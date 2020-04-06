@@ -18,10 +18,10 @@ services:
       - '--secure-file-priv=/var/lib/mysql-files'
 
   api:
-    image: pcourbin/debatido_api:0.1.0
+    image: pcourbin/debatsido_api:0.1.0
     build: ./api/DebatIDOAPI
-    volumes:
-     - ./api/DebatIDOAPI/DebatIDOAPI:/usr/src/app/DebatIDOAPI #For development
+#    volumes:
+#     - ./api/DebatIDOAPI/DebatIDOAPI:/usr/src/app/DebatIDOAPI #For development
     environment:
         DATABASE_URL: "mysql://user:password@db:3306/debatsido"
         PORT: "3000"
@@ -32,12 +32,11 @@ services:
     restart: always
 
   front:
-    image: pcourbin/debatido_front:0.1.0
-    build: ./front/debatsido
+    image: pcourbin/debatsido_front:0.1.0
+    build: ./front/DebatIDOFront
     volumes:
-     - ./front/debatsido:/app #For development
-    environment:
-       API_BASE_PATH: http://api:3000
+#     - ./front/debatsido:/app #For development
+     - ./environment.ts:/app/src/environments/environment.ts #For deployments
     ports:
       - 3000:4200
     depends_on:
