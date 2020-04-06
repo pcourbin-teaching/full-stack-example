@@ -1,6 +1,12 @@
 <div style="text-align:center">
+  <img src="assets/img/logo512.png" alt="DébatsIDO" height="200" >
   <h1>
-    Welcome to {{ title }}!
+    Bienvenue sur {{ title }} !
   </h1>
 </div>
-<app-theme></app-theme>
+<mat-tab-group>
+  <mat-tab label="Themes"> <app-theme-table></app-theme-table> </mat-tab>
+  <mat-tab label="Protagonists"> <app-protagonist-table></app-protagonist-table> </mat-tab>
+  <mat-tab label="Quotes"> <app-quote-table></app-quote-table> </mat-tab>
+  <mat-tab label="References"> <app-reference-table></app-reference-table> </mat-tab>
+</mat-tab-group>

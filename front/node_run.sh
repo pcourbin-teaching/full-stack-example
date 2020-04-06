@@ -1,14 +1,10 @@
 #!/bin/bash
-#./node_run.sh "npm install ng-swagger-gen --save-dev" debatsido
-#./node_run.sh "debatsido/node_modules/.bin/ng-swagger-gen -i ./openapi-debatsido-v2.yaml -o debatsido/api"
+#./node_run.sh "npm install"
+#https://openclassrooms.com/fr/courses/4668271-developpez-des-applications-web-avec-angular/5086918-installez-les-outils-et-creez-votre-projet
+DOCKER_WORKDIR=/app
+HOST_WORKDIR=debatsido
+DOCKER_IMAGE=pcourbin/debatido_front:0.1.0
+docker run -it --rm -v "$PWD/$HOST_WORKDIR":$DOCKER_WORKDIR -w $DOCKER_WORKDIR $DOCKER_IMAGE $1
 
-#./node_run.sh "npm install ng-openapi-gen --save-dev" debatsido
-#./node_run.sh "debatsido/node_modules/.bin/ng-openapi-gen --input ./openapi-debatsido-v3.yaml --output debatsido/api3"
-WORKDIR=/usr/src/app
-DOCKER_IMAGE=timbru31/java-node:8-alpine
-if  [[ ! -z "$2" ]]
-then
-  cd $2
-fi
-# npx ng new debatsido
-docker run -it --rm -v "$PWD":$WORKDIR -w $WORKDIR $DOCKER_IMAGE $1
+# Change right of output folder
+sudo chown -R $USER:$USER $PWD/$HOST_WORKDIR/

@@ -1,0 +1,41 @@
+<h1>Protagonists</h1>
+
+<table mat-table [dataSource]="protagonists"  matSort class="mat-elevation-z8">
+
+  <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+  <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplay"></tr>
+
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header > ID </th>
+    <td mat-cell *matCellDef="let protagonist"> {{protagonist.id}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header > Name </th>
+    <td mat-cell *matCellDef="let protagonist"> {{protagonist.name}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="link">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header > Link </th>
+    <td mat-cell *matCellDef="let protagonist"> <div *ngIf="protagonist.link!==undefined"><a href={{protagonist.link}} target="_blank">Détails</a> </div> </td>
+  </ng-container>
+
+  <ng-container matColumnDef="type">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header > Type </th>
+    <td mat-cell *matCellDef="let protagonist"> {{protagonist.type}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="photo">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header > Photo </th>
+      <td mat-cell *matCellDef="let protagonist">
+        <div *ngIf="protagonist.photo!==undefined"><img
+           src={{protagonist.photo}}
+           alt={{protagonist.name}}
+           height="100" width="100" >
+        </div>
+      </td>
+  </ng-container>
+
+</table>
+
+<mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>

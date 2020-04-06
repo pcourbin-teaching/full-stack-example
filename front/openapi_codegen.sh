@@ -1,7 +1,7 @@
 #!/bin/bash
 #set -ev
 openapi_file="./openapi-debatsido.yaml"
-out_framework="python-flask"
+out_framework="typescript-angular"
 package_name="DebatIDOAPI"
 
 openapi_file=${1:-$openapi_file}
@@ -13,7 +13,7 @@ docker run --rm \
       -i /local/$openapi_file \
       -g $out_framework \
       --package-name $package_name \
-      -o /local/$package_name
+      -o /local/debatsido/$package_name
 
 # Change right of output folder
-sudo chown -R $USER:$USER ./out
+sudo chown -R $USER:$USER ./debatsido

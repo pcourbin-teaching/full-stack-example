@@ -1,0 +1,45 @@
+<h1>References</h1>
+
+<table mat-table [dataSource]="references"  matSort class="mat-elevation-z8">
+
+  <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+  <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplay"></tr>
+
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header > ID </th>
+    <td mat-cell *matCellDef="let reference"> {{reference.id}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="title">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header > Title </th>
+    <td mat-cell *matCellDef="let reference"> {{reference.title}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="details">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header > Details </th>
+    <td mat-cell *matCellDef="let reference"> {{reference.details}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="url">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header > Link </th>
+    <td mat-cell *matCellDef="let reference"> <div *ngIf="reference.url!==undefined"><a href={{reference.url}} target="_blank">Détails</a> </div> </td>
+  </ng-container>
+
+  <ng-container matColumnDef="date">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header > Date </th>
+    <td mat-cell *matCellDef="let reference"> {{reference.date}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="typeTitle">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header > Type </th>
+    <td mat-cell *matCellDef="let reference"> {{reference.typeTitle}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="reliability">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header > Reliability </th>
+    <td mat-cell *matCellDef="let reference"> {{reference.reliability}} </td>
+  </ng-container>
+
+</table>
+
+<mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>

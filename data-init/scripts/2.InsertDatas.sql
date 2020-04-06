@@ -151,3 +151,4 @@ SELECT pe.id, pe.surname, pe.role, pe.dateUpdate FROM protagonist pr JOIN person
 SELECT * FROM company;
 
 SELECT q.id, q.title, q.details, q.typeID, qt.title as typeTitle, q.dateUpdate FROM quote q JOIN quoteType qt ON q.typeID JOIN quoteLink ql ON ql.quoteSupportID = q.id WHERE ql.quoteMainID = 2;
+SELECT ql.quoteMainID, ql.quoteSupportID, ql.typeID, qlt.title, ql.dateUpdate FROM quoteLink ql JOIN quoteLinkType qlt ON ql.typeID = qlt.id WHERE ql.quoteSupportID = 2;

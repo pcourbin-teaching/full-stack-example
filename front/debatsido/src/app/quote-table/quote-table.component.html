@@ -1,0 +1,30 @@
+<h1>Quotes</h1>
+
+<table mat-table [dataSource]="quotes"  matSort class="mat-elevation-z8">
+
+  <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+  <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplay"></tr>
+
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header > ID </th>
+    <td mat-cell *matCellDef="let quote"> {{quote.id}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="title">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header > Title </th>
+    <td mat-cell *matCellDef="let quote"> {{quote.title}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="details">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header > Details </th>
+    <td mat-cell *matCellDef="let quote"> {{quote.details}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="typeTitle">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header > Type </th>
+    <td mat-cell *matCellDef="let quote"> {{quote.typeTitle}} </td>
+  </ng-container>
+
+</table>
+
+<mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
