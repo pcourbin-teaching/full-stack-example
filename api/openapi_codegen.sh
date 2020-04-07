@@ -1,6 +1,6 @@
 #!/bin/bash
 #set -ev
-openapi_file="./openapi-debatsido.yaml"
+openapi_file="openapi-debatsido.yaml"
 out_framework="python-flask"
 package_name="DebatIDOAPI"
 
@@ -16,4 +16,4 @@ docker run --rm \
       -o /local/$package_name
 
 # Change right of output folder
-sudo chown -R $USER:$USER ./out
+sudo chown -R $USER:$USER ./$package_name

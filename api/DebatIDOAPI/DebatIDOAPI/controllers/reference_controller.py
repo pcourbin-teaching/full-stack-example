@@ -24,7 +24,7 @@ def reference_get(offset=None, limit=None):  # noqa: E501
     return Database.getListWithDetailsFromOtherClassParameters(Reference)
 
 
-def reference_post(reference):  # noqa: E501
+def reference_post(body):  # noqa: E501
     """Create Reference
 
      # noqa: E501
@@ -34,9 +34,14 @@ def reference_post(reference):  # noqa: E501
 
     :rtype: None
     """
+    valueReturn = 0
+    codeReturn = 401
+
     if connexion.request.is_json:
         reference = Reference.from_dict(connexion.request.get_json())  # noqa: E501
-    return 'do some magic!'
+        valueReturn, codeReturn = Database.postNewObject(reference)
+
+    return valueReturn, codeReturn
 
 
 def references_reference_iddelete(reference_id):  # noqa: E501

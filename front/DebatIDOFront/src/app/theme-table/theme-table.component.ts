@@ -6,8 +6,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 
-import { ThemeService } from '../../../DebatIDOAPI/api/theme.service';
-import { Theme } from '../../../DebatIDOAPI/model/theme';
+import { ThemeService, Theme } from '../../../DebatIDOAPI';
 
 
 @Component({

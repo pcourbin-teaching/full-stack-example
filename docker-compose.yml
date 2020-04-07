@@ -20,8 +20,8 @@ services:
   api:
     image: pcourbin/debatsido_api:0.1.0
     build: ./api/DebatIDOAPI
-#    volumes:
-#     - ./api/DebatIDOAPI/DebatIDOAPI:/usr/src/app/DebatIDOAPI #For development
+    volumes:
+     - ./api/DebatIDOAPI/DebatIDOAPI:/usr/src/app/DebatIDOAPI #For development
     environment:
         DATABASE_URL: "mysql://user:password@db:3306/debatsido"
         PORT: "3000"
@@ -35,7 +35,7 @@ services:
     image: pcourbin/debatsido_front:0.1.0
     build: ./front/DebatIDOFront
     volumes:
-#     - ./front/debatsido:/app #For development
+     - ./front/DebatIDOFront:/app #For development
      - ./environment.ts:/app/src/environments/environment.ts #For deployments
     ports:
       - 3000:4200

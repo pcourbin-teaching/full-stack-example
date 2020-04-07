@@ -6,8 +6,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { environment } from '../environments/environment';
-import { ApiModule } from '../../DebatIDOAPI/api.module';
-import { BASE_PATH } from '../../DebatIDOAPI/variables';
 
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -25,6 +23,22 @@ import { QuoteTableComponent } from './quote-table/quote-table.component';
 import { ReferenceTableComponent } from './reference-table/reference-table.component';
 import { QuoteGraphComponent } from './quote-graph/quote-graph.component';
 
+import { ApiModule, Configuration, ConfigurationParameters } from '../../DebatIDOAPI';
+import { BASE_PATH } from '../../DebatIDOAPI/variables';
+
+export function apiConfigFactory() {
+    const params: ConfigurationParameters = {
+      apiKeys: {"API_KEY": "vC$!Y0CEnMjyT07E&$66lYkyN^G4Zd$C8#0sV1wVzeqn%I@8LY"},
+  //    username?: string;
+  //    password?: string;
+  //    accessToken?: string | (() => string);
+      basePath: environment.API_BASE_PATH,
+  //    withCredentials?: boolean;
+  //    encoder?: HttpParameterCodec;
+
+    };
+    return new Configuration(params);
+}
 
 
 @NgModule({
@@ -40,7 +54,7 @@ import { QuoteGraphComponent } from './quote-graph/quote-graph.component';
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
-    ApiModule,
+    ApiModule.forRoot(apiConfigFactory),
     BrowserAnimationsModule,
     MatSliderModule,
     MatTableModule,
@@ -49,7 +63,8 @@ import { QuoteGraphComponent } from './quote-graph/quote-graph.component';
     MatSortModule,
     MatExpansionModule,
   ],
-  providers: [ { provide: BASE_PATH, useValue: environment.API_BASE_PATH } ],
+  //providers: [ { provide: BASE_PATH, useValue: environment.API_BASE_PATH } ],
+  providers: [ ],
   bootstrap: [ AppComponent ]
 })
 export class AppModule { }

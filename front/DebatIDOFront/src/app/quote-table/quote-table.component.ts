@@ -3,8 +3,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 
-import { QuoteService } from '../../../DebatIDOAPI/api/quote.service';
-import { Quote } from '../../../DebatIDOAPI/model/quote';
+import { QuoteService, Quote } from '../../../DebatIDOAPI';
 
 @Component({
   selector: 'app-quote-table',

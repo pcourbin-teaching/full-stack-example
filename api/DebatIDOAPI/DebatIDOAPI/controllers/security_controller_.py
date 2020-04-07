@@ -1,5 +1,20 @@
 from typing import List
 
+from flask import current_app
+import inspect
+
+from connexion.exceptions import OAuthProblem
+
+TOKEN_DB = {
+    'G#hqqq8NlW&tz5Hjk#%qcr7^iV*P%2pZWd*!mafPpu5!ANjJwM': {
+        'uid': 100,
+        'sub' : "root"
+    },
+    'vC$!Y0CEnMjyT07E&$66lYkyN^G4Zd$C8#0sV1wVzeqn%I@8LY': {
+        'uid': 200,
+        'sub' : "front"
+    } 
+}
 
 def info_from_ApiKeyAuth(api_key, required_scopes):
     """
@@ -14,6 +29,9 @@ def info_from_ApiKeyAuth(api_key, required_scopes):
     :return: Information attached to provided api_key or None if api_key is invalid or does not allow access to called API
     :rtype: dict | None
     """
-    return {'uid': 'user_id'}
+    info = TOKEN_DB.get(api_key, None)
 
+    if not info:
+        raise OAuthProblem('Invalid token')
 
+    return info

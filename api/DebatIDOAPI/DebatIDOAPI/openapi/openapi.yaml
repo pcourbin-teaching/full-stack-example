@@ -6,6 +6,8 @@ info:
 servers:
 - description: Optional server description, e.g. Internal staging server for testing
   url: /
+security:
+- ApiKeyAuth: []
 paths:
   /protagonist:
     get:

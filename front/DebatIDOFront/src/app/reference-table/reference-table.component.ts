@@ -3,8 +3,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 
-import { ReferenceService } from '../../../DebatIDOAPI/api/reference.service';
-import { Reference } from '../../../DebatIDOAPI/model/reference';
+import { ReferenceService, Reference } from '../../../DebatIDOAPI';
 
 @Component({
   selector: 'app-reference-table',

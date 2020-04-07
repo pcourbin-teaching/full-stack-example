@@ -24,7 +24,7 @@ def theme_get(offset=None, limit=None):  # noqa: E501
     return Database.getListWithDetailsFromOtherClassParameters(Theme)
 
 
-def theme_post(theme):  # noqa: E501
+def theme_post(body):  # noqa: E501
     """Create Theme
 
      # noqa: E501
@@ -34,9 +34,14 @@ def theme_post(theme):  # noqa: E501
 
     :rtype: None
     """
+    valueReturn = 0
+    codeReturn = 401
+
     if connexion.request.is_json:
         theme = Theme.from_dict(connexion.request.get_json())  # noqa: E501
-    return 'do some magic!'
+        valueReturn, codeReturn = Database.postNewObject(theme)
+
+    return valueReturn, codeReturn
 
 
 def themes_theme_iddelete(theme_id):  # noqa: E501

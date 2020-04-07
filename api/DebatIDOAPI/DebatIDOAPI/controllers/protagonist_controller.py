@@ -24,7 +24,7 @@ def protagonist_get(offset=None, limit=None):  # noqa: E501
     return Database.getListWithDetailsFromOtherClassParameters(Protagonist)
 
 
-def protagonist_post(protagonist):  # noqa: E501
+def protagonist_post(body):  # noqa: E501
     """Create Protagonist
 
      # noqa: E501
@@ -34,9 +34,14 @@ def protagonist_post(protagonist):  # noqa: E501
 
     :rtype: None
     """
+    valueReturn = 0
+    codeReturn = 401
+
     if connexion.request.is_json:
         protagonist = Protagonist.from_dict(connexion.request.get_json())  # noqa: E501
-    return 'do some magic!'
+        valueReturn, codeReturn = Database.postNewObject(protagonist)
+
+    return valueReturn, codeReturn
 
 
 def protagonists_protagonist_iddelete(protagonist_id):  # noqa: E501

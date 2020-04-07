@@ -3,8 +3,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 
-import { ProtagonistService } from '../../../DebatIDOAPI/api/protagonist.service';
-import { Protagonist } from '../../../DebatIDOAPI/model/protagonist';
+import { ProtagonistService, Protagonist } from '../../../DebatIDOAPI';
 
 @Component({
   selector: 'app-protagonist-table',
