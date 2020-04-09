@@ -21,6 +21,7 @@ def reference_get(offset=None, limit=None):  # noqa: E501
 
     :rtype: None
     """
+    #return Database.getListAlchemy(Reference)
     return Database.getListWithDetailsFromOtherClassParameters(Reference)
 
 

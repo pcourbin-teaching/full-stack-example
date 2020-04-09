@@ -31,4 +31,6 @@ DebatIDOAPI/controllers/protagonist_controller.py
 DebatIDOAPI/controllers/reference_controller.py
 DebatIDOAPI/controllers/theme_controller.py
 DebatIDOAPI/controllers/security_controller_.py
+DebatIDOAPI/controllers/sqlalchemy_database_model.py
 requirements.txt
+Dockerfile

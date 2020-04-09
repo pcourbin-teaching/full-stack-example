@@ -43,7 +43,6 @@ components:
     referenceType:
       type: object
       required:
-        - id
         - title
       properties:
         id:
@@ -58,7 +57,6 @@ components:
     reference:
       type: object
       required:
-        - id
         - title
         - typeID
       properties:
@@ -94,7 +92,6 @@ components:
     quoteType:
       type: object
       required:
-        - id
         - title
       properties:
         id:
@@ -109,7 +106,6 @@ components:
     quote:
       type: object
       required:
-        - id
         - title
         - typeID
       properties:
@@ -154,7 +150,6 @@ components:
     quoteLinkType:
       type: object
       required:
-        - id
         - title
       properties:
         id:
@@ -198,7 +193,6 @@ components:
     theme:
       type: object
       required:
-        - id
         - title
       properties:
         id:
@@ -250,7 +244,6 @@ components:
     protagonist:
       type: object
       required:
-        - id
         - type
         - name
       properties:

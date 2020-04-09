@@ -24,7 +24,15 @@ import mysql.connector
 url = make_url(os.getenv('DATABASE_URL'))
 #mydb = mysql.connector.connect(host=url.host,user=url.username,passwd=url.password,database=url.database)
 
-#https://github.com/zalando/connexion/tree/master/examples/openapi3/sqlalchemy
+from connexion import NoContent
+import DebatIDOAPI.controllers.sqlalchemy_database_model as orm
+db_session = orm.init_db(os.getenv('DATABASE_URL'))
+
+#@current_app.teardown_appcontext
+#def shutdown_session(exception=None):
+#    db_session.remove()
+
+
 
 classNames = {
     "quote" : Quote,
@@ -38,7 +46,10 @@ classSQLRequests = {
         "DELETE" : "DELETE FROM quote q WHERE q.id = ",
         "quoteMains" : "SELECT q.id, q.title, q.details, q.typeID, qt.title as typeTitle, q.dateUpdate FROM quote q JOIN quoteType qt ON q.typeID JOIN quoteLink ql ON ql.quoteMainID = q.id WHERE ql.quoteSupportID = ",
         "quoteSupports" : "SELECT q.id, q.title, q.details, q.typeID, qt.title as typeTitle, q.dateUpdate FROM quote q JOIN quoteType qt ON q.typeID JOIN quoteLink ql ON ql.quoteSupportID = q.id WHERE ql.quoteMainID = ",
-        "DBTable" : "quote"
+        "DBTable" : "quote",
+        "SQL": orm.QuoteDB,
+        "authors": orm.ProtagonistDB,
+        Protagonist: "INSERT INTO quoteAuthor (quoteID, authorID) VALUES ({}, {})"
     },
     QuoteLink : {
         "quoteMains" : "SELECT ql.quoteMainID, ql.quoteSupportID, ql.typeID, qlt.title as typeTitle, ql.dateUpdate FROM quoteLink ql JOIN quoteLinkType qlt ON ql.typeID = qlt.id WHERE ql.quoteSupportID = ",
@@ -50,7 +61,8 @@ classSQLRequests = {
         "ID" : "SELECT r.id, r.title, r.details, r.url, r.date, r.typeID, rt.title as typeTitle, r.reliability, r.dateUpdate FROM reference r JOIN referenceType rt ON r.typeID = rt.id WHERE r.id =",
         "DELETE" : "DELETE FROM reference r WHERE r.id = ",
         "DBTable" : "reference",
-        Quote : "SELECT r.id, r.title, r.details, r.url, r.date, r.typeID, rt.title, r.reliability, r.dateUpdate FROM reference r JOIN quoteReference qr ON r.id = qr.referenceID JOIN referenceType rt ON r.typeID = rt.id WHERE qr.quoteID = "
+        Quote : "SELECT r.id, r.title, r.details, r.url, r.date, r.typeID, rt.title, r.reliability, r.dateUpdate FROM reference r JOIN quoteReference qr ON r.id = qr.referenceID JOIN referenceType rt ON r.typeID = rt.id WHERE qr.quoteID = ",
+        "SQL" : orm.ReferenceDB,
     },
     Theme : {
         "List" : "SELECT t.id, t.title FROM theme t;",
@@ -58,13 +70,14 @@ classSQLRequests = {
         "DELETE" : "DELETE FROM theme t WHERE t.id = ",
         "DBTable" : "theme",
         Quote : "SELECT t.id, t.title FROM theme t JOIN quoteTheme qt ON t.id = qt.themeID WHERE qt.quoteID = ",
+        "SQL" : orm.ThemeDB,
     },
     Protagonist : {
         "List" : "SELECT p.id, p.type, p.name, p.link, p.photo, p.dateUpdate FROM protagonist p;",
         "ID" : "SELECT p.id, p.type, p.name, p.link, p.photo, p.dateUpdate FROM protagonist p WHERE p.id = ",
         "DELETE" : "DELETE FROM protagonist pr WHERE pr.id = ",
         "DBTable" : "protagonist",
-        Quote : "SELECT pe.id, pe.surname, pe.role, pe.dateUpdate FROM protagonist pr JOIN person pe ON pr.id = pe.id JOIN quoteAuthor qa ON qa.authorID = ",
+        Quote : "SELECT p.id, p.type, p.name, p.link, p.photo, p.dateUpdate FROM protagonist p JOIN quoteAuthor qa ON p.id = qa.authorID JOIN quote q ON q.id = qa.quoteID WHERE q.id =  ",
         Reference : "SELECT p.id, p.type, p.name, p.link, p.photo, p.dateUpdate FROM protagonist p JOIN referenceAuthor ra ON p.id = ra.authorID JOIN reference r ON r.id = ra.referenceID WHERE r.id = "
     },
     Person : {
@@ -94,10 +107,48 @@ class Database:
         return dictSubClasses
 
     @classmethod
-    def postNewObject(cls, myNewObject):
+    def insertINTO(cls, insertInto):
 
         valueReturn = 0
         errorReturn = ""
+        codeReturn = 401
+
+        try:
+            mydb = mysql.connector.connect(host=url.host,user=url.username,passwd=url.password,database=url.database)
+            cur = mydb.cursor(dictionary=True)
+            cur.execute(insertInto)
+            mydb.commit()
+            #valueReturn = cur.rowcount
+            valueReturn = cur.lastrowid
+        except mysql.connector.Error as error:
+            mydb.rollback()
+            errorReturn = error
+        finally:
+            if (mydb.is_connected()):
+                mydb.close()
+
+        if (valueReturn == 0):
+            codeReturn = 424
+        else :
+            codeReturn = 201
+
+        return valueReturn, errorReturn, codeReturn
+
+    @classmethod
+    def insertINTOorGET(cls, myNewObject, insertInto):
+
+        valueReturn, errorReturn, codeReturn = Database.insertINTO(insertInto)
+        if (valueReturn == 0):
+            valueReturn = myNewObject.id
+
+        returnObject = Database.getObjectFromIDWithDetailsFromOtherClassParameters(type(myNewObject),valueReturn)
+        return returnObject, codeReturn
+
+# POST OU UPDATE ??
+    @classmethod
+    def postNewObject(cls, myNewObject):
+
+        returnObject = None
         codeReturn = 401
 
         user = TOKEN_DB.get(connexion.request.headers['API_KEY'], None)
@@ -107,31 +158,50 @@ class Database:
                 parametersDB = list()
                 if (myNewObject is not None):
                     for parameterPython, parameterDB in myNewObject.attribute_map.items():
-                        #if (parameterPython != "id"):
-                        parametersDB.append(parameterDB)
-                        parametersValue.append(getattr(myNewObject, parameterPython))
+                        attribute = getattr(myNewObject, parameterPython)
+                        if (attribute is not None and type(attribute) is not list):
+                            parametersDB.append(parameterDB)
+                            parametersValue.append(getattr(myNewObject, parameterPython))
                     mySql_insert_query_start = "INSERT INTO "+classSQLRequests[type(myNewObject)]["DBTable"]+" ("
                     mySql_insert_query_end = ") VALUES ("
                     mysql_insert_query = mySql_insert_query_start + str(parametersDB).replace("[","").replace("]","").replace("'","") + mySql_insert_query_end + str(parametersValue).strip('[]') + ");"
 
-                    try:
-                        mydb = mysql.connector.connect(host=url.host,user=url.username,passwd=url.password,database=url.database)
-                        cur = mydb.cursor(dictionary=True)
-                        cur.execute(mysql_insert_query)
-                        mydb.commit()
-                        valueReturn = cur.rowcount
-                    except mysql.connector.Error as error:
-                        mydb.rollback()
-                        errorReturn = error
-                    finally:
-                        if (mydb.is_connected()):
-                            mydb.close()
+                    returnObject, codeReturn = Database.insertINTOorGET(myNewObject,mysql_insert_query)
+                    for parameterPython, parameterDB in myNewObject.attribute_map.items():
+                        attribute = getattr(myNewObject, parameterPython)
+                        if (attribute is not None and type(attribute) is list):
+                            for l in attribute:
+                                returnObjectL, codeReturnL = Database.postNewObject(l)
+                                if (returnObjectL is not None):
+                                    test = Database.insertINTO(classSQLRequests[type(myNewObject)][type(l)].format(returnObject.id, returnObjectL.id))
+                    returnObject = Database.getObjectFromIDWithDetailsFromOtherClassParameters(type(myNewObject),returnObject.id)
+                    """
+                    valueReturn, errorReturn, codeReturn = Database.insertINTO(mysql_insert_query)
 
-                    if (valueReturn == 0):
-                        codeReturn = 424
-                    else :
-                        codeReturn = 201
-        return str(valueReturn) + " row(s) affected. "+str(errorReturn), codeReturn
+
+                    newObjectID = valueReturn
+                    if (newObjectID == 0):
+                        testObject = Database.getObjectFromID(type(myNewObject),myNewObject.id)
+                        newObjectID = testObject.id
+
+                    if (newObjectID is not None and newObjectID != 0):
+                        for parameterPython, parameterDB in myNewObject.attribute_map.items():
+                            attribute = getattr(myNewObject, parameterPython)
+                            if (attribute is not None and type(attribute) is list):
+                                for l in attribute:
+                                    tempL, errorL, codeRL = Database.postNewObject(l)
+                                    if (tempL == 0):
+                                        testL = Database.getObjectFromID(type(l),l.id)
+                                        if (testL is not None):
+                                            tempL = testL.id
+                                    if (tempL is not None):
+                                        test = Database.insertINTO(classSQLRequests[type(myNewObject)][type(l)].format(newObjectID, tempL))
+
+                    """
+        return returnObject, codeReturn
+        #return valueReturn, errorReturn, codeReturn
+        #return str(valueReturn) + " row(s) affected. "+str(errorReturn), codeReturn
+
 
     @classmethod
     #TODO
@@ -189,6 +259,14 @@ class Database:
             mydb.close()
         return list
 
+
+    @classmethod
+    def getListAlchemy(cls, classMyObject):
+        q = []
+        if ("SQL" in classSQLRequests[classMyObject]):
+            q = db_session.query(classSQLRequests[classMyObject]["SQL"])
+        return [p.dump() for p in q][:-1] # replace -1 with limit paramter
+
     @classmethod
     def getListWithDetailsFromOtherClassParameters(cls, classMyObject):
         list = Database.getList(classMyObject)
@@ -244,12 +322,14 @@ class Database:
                 dictSubClasses = Database.getOtherClassParameters(myObject)
                 for objectName, subClassObject in dictSubClasses.items():
                     parameter = myObject.attribute_map[objectName]
-                    """
+
                     if parameter == "quoteMains" or parameter == "quoteSupports":
-                        setattr(myObject, objectName, Database.getListFromOtherID(subClassObject,parameter,myObject.id))
+                        #setattr(myObject, objectName, Database.getListFromOtherID(subClassObject,parameter,myObject.id))
+                        current_app.logger.debug("Not included")
                     else:
+                        current_app.logger.debug("Attribut {} / {} : {}".format(objectName,subClassObject,Database.getListFromOtherID(subClassObject,type(myObject),myObject.id)))
                         setattr(myObject, objectName, Database.getListFromOtherID(subClassObject,type(myObject),myObject.id))
-                    """
+
             else:
                 dictSubClasses = Database.getOtherClassParameters(myObject)
                 for objectName, subClassObject in dictSubClasses.items():

@@ -22,6 +22,7 @@ def quote_get(offset=None, limit=None):  # noqa: E501
 
     :rtype: None
     """
+    #return Database.getList(Quote)
     return Database.getListWithDetailsFromOtherClassParameters(Quote)
 
 
@@ -35,14 +36,14 @@ def quote_post(body):  # noqa: E501
 
     :rtype: None
     """
-    valueReturn = 0
+    returnObject = None
     codeReturn = 401
 
     if connexion.request.is_json:
         quote = Quote.from_dict(connexion.request.get_json())  # noqa: E501
-        valueReturn, codeReturn = Database.postNewObject(quote)
+        returnObject, codeReturn = Database.postNewObject(quote)
 
-    return valueReturn, codeReturn
+    return returnObject, codeReturn
 
 
 def quotes_quote_id_mains_get(quote_id, offset=None, limit=None):  # noqa: E501
