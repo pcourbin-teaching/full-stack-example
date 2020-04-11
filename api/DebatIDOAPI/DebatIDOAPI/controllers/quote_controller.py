@@ -22,7 +22,6 @@ def quote_get(offset=None, limit=None):  # noqa: E501
 
     :rtype: None
     """
-    #return Database.getList(Quote)
     return Database.getListWithDetailsFromOtherClassParameters(Quote)
 
 
@@ -106,7 +105,7 @@ def quotes_quote_idget(quote_id):  # noqa: E501
     return Database.getObjectFromIDWithDetailsFromOtherClassParameters(Quote,quote_id)
 
 
-def quotes_quote_idpatch(quote_id, quote):  # noqa: E501
+def quotes_quote_idpatch(quote_id, body):  # noqa: E501
     """Update Quote object
 
     Test # noqa: E501
@@ -118,6 +117,11 @@ def quotes_quote_idpatch(quote_id, quote):  # noqa: E501
 
     :rtype: None
     """
+    returnObject = None
+    codeReturn = 401
+
     if connexion.request.is_json:
         quote = Quote.from_dict(connexion.request.get_json())  # noqa: E501
-    return 'do some magic!'
+        returnObject, codeReturn = Database.patchObject(quote,quote_id)
+
+    return returnObject, codeReturn

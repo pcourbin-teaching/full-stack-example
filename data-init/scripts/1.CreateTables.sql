@@ -80,6 +80,7 @@ CREATE TABLE `quoteLink` (
   `quoteSupportID` INT NOT NULL,
   `typeID` INT NOT NULL,
   `dateUpdate` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`quoteMainID`, `quoteSupportID`),
   CONSTRAINT `FK_quoteIDLinkType` FOREIGN KEY (`typeID`)
     REFERENCES `quoteLinkType` (`id`)
     ON DELETE NO ACTION
@@ -108,6 +109,7 @@ CREATE TABLE `theme` (
 CREATE TABLE `quoteTheme` (
   `themeID` INT NOT NULL,
   `quoteID` INT NOT NULL,
+  PRIMARY KEY (`themeID`, `quoteID`),
   CONSTRAINT `FK_quoteID_theme` FOREIGN KEY (`themeID`)
     REFERENCES `theme` (`id`)
     ON DELETE CASCADE
@@ -121,6 +123,7 @@ CREATE TABLE `quoteTheme` (
 CREATE TABLE `quoteReference` (
   `quoteID` INT NOT NULL,
   `referenceID` INT NOT NULL,
+  PRIMARY KEY (`referenceID`, `quoteID`),
   CONSTRAINT `FK_referenceID_quote` FOREIGN KEY (`quoteID`)
     REFERENCES `quote` (`id`)
     ON DELETE NO ACTION
@@ -150,6 +153,7 @@ BEFORE UPDATE ON `protagonist`
 CREATE TABLE `quoteAuthor` (
   `quoteID` INT NOT NULL,
   `authorID` INT NOT NULL,
+  PRIMARY KEY (`authorID`, `quoteID`),
   CONSTRAINT `FK_authorID_quote` FOREIGN KEY (`quoteID`)
     REFERENCES `quote` (`id`)
     ON DELETE CASCADE
@@ -163,6 +167,7 @@ CREATE TABLE `quoteAuthor` (
 CREATE TABLE `referenceAuthor` (
   `referenceID` INT NOT NULL,
   `authorID` INT NOT NULL,
+  PRIMARY KEY (`authorID`, `referenceID`),
   CONSTRAINT `FK_authorID_reference` FOREIGN KEY (`referenceID`)
     REFERENCES `reference` (`id`)
     ON DELETE CASCADE

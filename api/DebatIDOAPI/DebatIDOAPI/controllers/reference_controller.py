@@ -21,7 +21,6 @@ def reference_get(offset=None, limit=None):  # noqa: E501
 
     :rtype: None
     """
-    #return Database.getListAlchemy(Reference)
     return Database.getListWithDetailsFromOtherClassParameters(Reference)
 
 
@@ -71,7 +70,7 @@ def references_reference_idget(reference_id):  # noqa: E501
     return Database.getObjectFromIDWithDetailsFromOtherClassParameters(Reference,reference_id)
 
 
-def references_reference_idpatch(reference_id, reference):  # noqa: E501
+def references_reference_idpatch(reference_id, body):  # noqa: E501
     """Update Reference object
 
     Test # noqa: E501
@@ -83,6 +82,12 @@ def references_reference_idpatch(reference_id, reference):  # noqa: E501
 
     :rtype: None
     """
+
+    valueReturn = 0
+    codeReturn = 401
+
     if connexion.request.is_json:
         reference = Reference.from_dict(connexion.request.get_json())  # noqa: E501
-    return 'do some magic!'
+        valueReturn, codeReturn = Database.patchObject(reference, reference_id)
+
+    return valueReturn, codeReturn

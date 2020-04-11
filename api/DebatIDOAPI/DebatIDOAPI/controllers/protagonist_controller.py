@@ -70,7 +70,7 @@ def protagonists_protagonist_idget(protagonist_id):  # noqa: E501
     return Database.getObjectFromIDWithDetailsFromOtherClassParameters(Protagonist,protagonist_id)
 
 
-def protagonists_protagonist_idpatch(protagonist_id, protagonist):  # noqa: E501
+def protagonists_protagonist_idpatch(protagonist_id, body):  # noqa: E501
     """Update Protagonist object
 
     Test # noqa: E501
@@ -82,6 +82,12 @@ def protagonists_protagonist_idpatch(protagonist_id, protagonist):  # noqa: E501
 
     :rtype: None
     """
+
+    valueReturn = 0
+    codeReturn = 401
+
     if connexion.request.is_json:
         protagonist = Protagonist.from_dict(connexion.request.get_json())  # noqa: E501
-    return 'do some magic!'
+        valueReturn, codeReturn = Database.patchObject(protagonist,protagonist_id)
+
+    return valueReturn, codeReturn
