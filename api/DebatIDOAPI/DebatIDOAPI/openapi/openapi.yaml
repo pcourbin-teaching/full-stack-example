@@ -1160,8 +1160,6 @@ components:
           type: string
         dateUpdate:
           type: string
-      required:
-      - id
       type: object
     company:
       properties:
@@ -1172,8 +1170,6 @@ components:
           type: string
         dateUpdate:
           type: string
-      required:
-      - id
       type: object
   securitySchemes:
     ApiKeyAuth:

@@ -12,7 +12,7 @@
 
 
 export interface ReferenceType { 
-    id: number;
+    id?: number;
     title: string;
 }
 

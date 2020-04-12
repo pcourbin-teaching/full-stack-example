@@ -12,7 +12,7 @@
 
 
 export interface Person { 
-    id: number;
+    id?: number;
     surname?: string;
     role?: string;
     dateUpdate?: string;

@@ -130,10 +130,7 @@ class Database:
             cur = mydb.cursor(dictionary=True)
             cur.execute(insertInto)
             mydb.commit()
-            if (insertInto.startswith("INSERT")):
-                valueReturn = cur.lastrowid
-            elif (insertInto.startswith("UPDATE")):
-                valueReturn = cur.rowcount
+            valueReturn = cur.lastrowid
         except mysql.connector.Error as error:
             mydb.rollback()
             errorReturn = error
@@ -141,24 +138,23 @@ class Database:
             if (mydb.is_connected()):
                 mydb.close()
 
-        if (valueReturn == 0):
+        if ((cur.lastrowid == 0 and insertInto.startswith("INSERT")) or (cur.rowcount == 0 and insertInto.startswith("UPDATE"))):
             codeReturn = 424
         else :
             codeReturn = 201
-
         return valueReturn, errorReturn, codeReturn
 
     @classmethod
     def insertPatchOrGet(cls, myNewObject, insertInto):
 
         valueReturn, errorReturn, codeReturn = Database.insertPatch(insertInto)
-        if (valueReturn == 0):
+
+        if ((insertInto.startswith("UPDATE") or codeReturn != 201) and myNewObject.id is not None):
             valueReturn = myNewObject.id
 
         returnObject = Database.getObjectFromIDWithDetailsFromOtherClassParameters(type(myNewObject),valueReturn)
         return returnObject, codeReturn
 
-# POST OU UPDATE ??
     @classmethod
     def postNewObject(cls, myNewObject):
 
@@ -173,7 +169,7 @@ class Database:
 
                 for parameterPython, parameterDB in myNewObject.attribute_map.items():
                     attribute = getattr(myNewObject, parameterPython)
-                    if (attribute is not None and type(attribute) is not list):
+                    if (attribute is not None and type(attribute) is not list and type(attribute) is not Person and type(attribute) is not Company):
                         parametersDB.append(parameterDB)
                         parametersValue.append(attribute)
 
@@ -189,7 +185,11 @@ class Database:
                             for l in attribute:
                                 returnObjectL, codeReturnL = Database.postNewObject(l)
                                 if (returnObjectL is not None):
-                                    test = Database.insertPatch(classSQLRequests[type(myNewObject)]["INSERT"][type(l)].format(returnObject.id, returnObjectL.id))
+                                    Database.insertPatch(classSQLRequests[type(myNewObject)]["INSERT"][type(l)].format(returnObject.id, returnObjectL.id))
+                        elif (type(attribute) is Person or type(attribute) is Company):
+                            attribute.id = returnObject.id
+                            Database.postNewObject(attribute)
+
                     returnObject = Database.getObjectFromIDWithDetailsFromOtherClassParameters(type(myNewObject),returnObject.id)
         return returnObject, codeReturn
 
@@ -207,10 +207,14 @@ class Database:
                 mysql_patch_query_middle = ""
                 for parameterPython, parameterDB in myPatchedObject.attribute_map.items():
                     attribute = getattr(myPatchedObject, parameterPython)
-                    if (attribute is not None and type(attribute) is not list):
+                    if (attribute is not None and type(attribute) is not list and type(attribute) is not Person and type(attribute) is not Company):
                         if (len(mysql_patch_query_middle) > 0):
                             mysql_patch_query_middle = mysql_patch_query_middle + ","
-                        mysql_patch_query_middle = mysql_patch_query_middle + str(parameterDB) + " = " + str(attribute)
+                        if (type(attribute) is str):
+                            mysql_patch_query_middle = mysql_patch_query_middle + str(parameterDB) + " = " + "'" + str(attribute) + "'"
+                        else:
+                            mysql_patch_query_middle = mysql_patch_query_middle + str(parameterDB) + " = " + str(attribute)
+
 
                 mySql_patch_query_start = "UPDATE "+classSQLRequests[type(myPatchedObject)]["DBTable"]+" SET "
                 mySql_patch_query_end = " WHERE id = "+str(myPatchedObjectID)+";"
@@ -224,7 +228,10 @@ class Database:
                             for l in attribute:
                                 returnObjectL, codeReturnL = Database.postNewObject(l)
                                 if (returnObjectL is not None):
-                                    test = Database.insertPatch(classSQLRequests[type(myPatchedObject)]["INSERT"][type(l)].format(returnObject.id, returnObjectL.id))
+                                    Database.insertPatch(classSQLRequests[type(myPatchedObject)]["INSERT"][type(l)].format(returnObject.id, returnObjectL.id))
+                        elif (type(attribute) is Person or type(attribute) is Company):
+                            attribute.id = returnObject.id
+                            Database.patchObject(attribute, attribute.id)
                     returnObject = Database.getObjectFromIDWithDetailsFromOtherClassParameters(type(myPatchedObject),returnObject.id)
         return returnObject, codeReturn
 
@@ -319,7 +326,8 @@ class Database:
 
                     if parameter == "quoteMains" or parameter == "quoteSupports":
                         #setattr(myObject, objectName, Database.getListFromOtherID(subClassObject,parameter,myObject.id))
-                        current_app.logger.debug("Not included")
+                        #current_app.logger.debug("Not included")
+                        pass
                     else:
                         #current_app.logger.debug("Attribut {} / {} : {}".format(objectName,subClassObject,Database.getListFromOtherID(subClassObject,type(myObject),myObject.id)))
                         setattr(myObject, objectName, Database.getListFromOtherID(subClassObject,type(myObject),myObject.id))

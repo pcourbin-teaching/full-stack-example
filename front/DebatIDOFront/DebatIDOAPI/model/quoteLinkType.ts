@@ -12,7 +12,7 @@
 
 
 export interface QuoteLinkType { 
-    id: number;
+    id?: number;
     title: string;
 }
 

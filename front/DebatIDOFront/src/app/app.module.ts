@@ -16,6 +16,14 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatStepperModule } from '@angular/material/stepper';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { OverlayModule } from '@angular/cdk/overlay';
 
 import { ThemeTableComponent } from './theme-table/theme-table.component';
 import { ProtagonistTableComponent } from './protagonist-table/protagonist-table.component';
@@ -25,10 +33,13 @@ import { QuoteGraphComponent } from './quote-graph/quote-graph.component';
 
 import { ApiModule, Configuration, ConfigurationParameters } from '../../DebatIDOAPI';
 import { BASE_PATH } from '../../DebatIDOAPI/variables';
+import { ThemeFormNewComponent } from './theme-form-new/theme-form-new.component';
+import { ProtagonistFormNewComponent } from './protagonist-form-new/protagonist-form-new.component';
+import { ThemeFormPatchComponent } from './theme-form-patch/theme-form-patch.component';
 
 export function apiConfigFactory() {
     const params: ConfigurationParameters = {
-      apiKeys: {"API_KEY": "vC$!Y0CEnMjyT07E&$66lYkyN^G4Zd$C8#0sV1wVzeqn%I@8LY"},
+      apiKeys: {"API_KEY": "G#hqqq8NlW&tz5Hjk#%qcr7^iV*P%2pZWd*!mafPpu5!ANjJwM"},
   //    username?: string;
   //    password?: string;
   //    accessToken?: string | (() => string);
@@ -48,7 +59,10 @@ export function apiConfigFactory() {
     ProtagonistTableComponent,
     QuoteTableComponent,
     ReferenceTableComponent,
-    QuoteGraphComponent
+    QuoteGraphComponent,
+    ThemeFormNewComponent,
+    ProtagonistFormNewComponent,
+    ThemeFormPatchComponent
   ],
   imports: [
     BrowserModule,
@@ -62,6 +76,15 @@ export function apiConfigFactory() {
     MatPaginatorModule,
     MatSortModule,
     MatExpansionModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
+    MatButtonModule,
+    MatStepperModule,
+    FormsModule,
+    ReactiveFormsModule,
+    OverlayModule,
+
   ],
   //providers: [ { provide: BASE_PATH, useValue: environment.API_BASE_PATH } ],
   providers: [ ],

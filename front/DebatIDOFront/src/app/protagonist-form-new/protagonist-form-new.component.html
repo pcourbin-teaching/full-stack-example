@@ -1,0 +1,63 @@
+<h1>Add Protagonist</h1>
+
+<mat-horizontal-stepper [linear]="true" labelPosition="bottom" #stepper>
+  <mat-step [stepControl]="protagonistFormGroup">
+    <ng-template matStepLabel>Protagonist parameters</ng-template>
+    <form [formGroup]="protagonistFormGroup">
+
+      <mat-form-field>
+      <mat-label>Type of Protagonist</mat-label>
+        <mat-select formControlName="type" required>
+          <mat-option *ngFor="let type of keys(this.protagonistTypes)" [value]="protagonistTypes[type]">
+            {{type}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Name of Protagonist</mat-label>
+        <input matInput placeholder="Name" formControlName="name" required>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Link</mat-label>
+        <input matInput type="url" placeholder="Ex. http://" formControlName="link">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Photo (Link)</mat-label>
+        <input matInput type="url" placeholder="Ex. http://" formControlName="photo">
+      </mat-form-field>
+
+      <button mat-button matStepperNext>Next</button>
+
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="personFormGroup">
+    <div *ngIf="protagonistFormGroup.value.type=='person'; else elseBlock">
+      <ng-template matStepLabel>Protagonist "Person" parameters</ng-template>
+      <form [formGroup]="personFormGroup" (ngSubmit)="onSubmitForm()">
+        <mat-form-field>
+          <mat-label>Surname</mat-label>
+          <input matInput placeholder="Surname" formControlName="surname">
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Role</mat-label>
+          <input matInput placeholder="Role" formControlName="role">
+        </mat-form-field>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button (click)="stepper.reset()">Reset</button>
+        <button mat-button type="submit">Submit</button>
+      </form>
+    </div>
+    <ng-template #elseBlock>
+      <ng-template matStepLabel>Protagonist "Company" parameters</ng-template>
+      <form [formGroup]="companyFormGroup" (ngSubmit)="onSubmitForm()">
+        <mat-form-field>
+          <mat-label>SIRET</mat-label>
+          <input matInput placeholder="SIRET" formControlName="siret">
+        </mat-form-field>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button (click)="stepper.reset()">Reset</button>
+        <button mat-button type="submit">Submit</button>
+      </form>
+    </ng-template>
+  </mat-step>
+</mat-horizontal-stepper>

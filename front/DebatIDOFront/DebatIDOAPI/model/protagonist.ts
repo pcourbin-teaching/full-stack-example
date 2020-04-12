@@ -14,7 +14,7 @@ import { Person } from './person';
 
 
 export interface Protagonist { 
-    id: number;
+    id?: number;
     type: Protagonist.TypeEnum;
     name: string;
     link?: string;

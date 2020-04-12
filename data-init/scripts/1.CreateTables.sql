@@ -46,8 +46,9 @@ BEFORE UPDATE ON `reference`
 
 CREATE TABLE `quoteType` (
   `id` INT AUTO_INCREMENT NOT NULL,
-  `title` TEXT NOT NULL,
-  PRIMARY KEY (`id`)
+  `title` VARCHAR(50) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE (`title`)
 ) CHARACTER SET utf8mb4;
 
 CREATE TABLE `quote` (
@@ -71,8 +72,9 @@ BEFORE UPDATE ON `quote`
 
 CREATE TABLE `quoteLinkType` (
   `id` INT AUTO_INCREMENT NOT NULL,
-  `title` TEXT NOT NULL,
-  PRIMARY KEY (`id`)
+  `title` VARCHAR(50) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE (`title`)
 ) CHARACTER SET utf8mb4;
 
 CREATE TABLE `quoteLink` (
@@ -102,8 +104,9 @@ BEFORE UPDATE ON `quoteLink`
 
 CREATE TABLE `theme` (
   `id` INT AUTO_INCREMENT NOT NULL,
-  `title` TEXT NOT NULL,
-  PRIMARY KEY (`id`)
+  `title` VARCHAR(50) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE (`title`)
 ) CHARACTER SET utf8mb4;
 
 CREATE TABLE `quoteTheme` (

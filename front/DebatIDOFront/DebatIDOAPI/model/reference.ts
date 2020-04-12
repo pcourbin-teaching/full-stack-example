@@ -13,7 +13,7 @@ import { Protagonist } from './protagonist';
 
 
 export interface Reference { 
-    id: number;
+    id?: number;
     title: string;
     details?: string;
     url?: string;

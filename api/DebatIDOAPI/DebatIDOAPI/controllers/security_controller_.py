@@ -29,11 +29,10 @@ def info_from_ApiKeyAuth(api_key, required_scopes):
     :return: Information attached to provided api_key or None if api_key is invalid or does not allow access to called API
     :rtype: dict | None
     """
-    current_app.logger.debug("{} -- {}".format(api_key, TOKEN_DB))
 
     info = TOKEN_DB.get(api_key, None)
 
-    current_app.logger.debug("{} -- {} -- {}".format(info, api_key, TOKEN_DB))
+    #current_app.logger.debug("{} -- {} -- {}".format(info, api_key, TOKEN_DB))
 
     if not info:
         raise OAuthProblem('Invalid token')

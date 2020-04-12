@@ -12,7 +12,7 @@
 
 
 export interface Theme { 
-    id: number;
+    id?: number;
     title: string;
 }
 

@@ -12,7 +12,7 @@
 
 
 export interface QuoteType { 
-    id: number;
+    id?: number;
     title: string;
 }
 

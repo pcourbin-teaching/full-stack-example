@@ -15,7 +15,7 @@ import { Protagonist } from './protagonist';
 
 
 export interface Quote { 
-    id: number;
+    id?: number;
     title: string;
     details?: string;
     typeID: number;

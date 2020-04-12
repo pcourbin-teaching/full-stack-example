@@ -1,0 +1,12 @@
+<h1>Add Theme</h1>
+
+<form [formGroup]="themeFormGroup" (ngSubmit)="onSubmitForm()">
+  <div>
+  <mat-form-field>
+    <mat-label>Add New Theme Title</mat-label>
+    <input matInput placeholder="Add New Theme Title" formControlName="title" required>
+  </mat-form-field>
+
+  <button mat-button type="submit">Submit</button>
+  </div>
+</form>

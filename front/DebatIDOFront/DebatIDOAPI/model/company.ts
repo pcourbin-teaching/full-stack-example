@@ -12,7 +12,7 @@
 
 
 export interface Company { 
-    id: number;
+    id?: number;
     siret?: string;
     dateUpdate?: string;
 }

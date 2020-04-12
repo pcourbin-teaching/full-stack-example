@@ -302,8 +302,6 @@ components:
 
     person:
       type: object
-      required:
-        - id
       properties:
         id:
           type: integer
@@ -317,8 +315,6 @@ components:
 
     company:
       type: object
-      required:
-        - id
       properties:
         id:
           type: integer
