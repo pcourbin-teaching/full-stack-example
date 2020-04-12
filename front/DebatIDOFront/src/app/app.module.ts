@@ -24,6 +24,7 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { OverlayModule } from '@angular/cdk/overlay';
+import { MatIconModule } from '@angular/material/icon';
 
 import { ThemeTableComponent } from './theme-table/theme-table.component';
 import { ProtagonistTableComponent } from './protagonist-table/protagonist-table.component';
@@ -36,6 +37,7 @@ import { BASE_PATH } from '../../DebatIDOAPI/variables';
 import { ThemeFormNewComponent } from './theme-form-new/theme-form-new.component';
 import { ProtagonistFormNewComponent } from './protagonist-form-new/protagonist-form-new.component';
 import { ThemeFormPatchComponent } from './theme-form-patch/theme-form-patch.component';
+import { ProtagonistFormPatchComponent } from './protagonist-form-patch/protagonist-form-patch.component';
 
 export function apiConfigFactory() {
     const params: ConfigurationParameters = {
@@ -62,7 +64,8 @@ export function apiConfigFactory() {
     QuoteGraphComponent,
     ThemeFormNewComponent,
     ProtagonistFormNewComponent,
-    ThemeFormPatchComponent
+    ThemeFormPatchComponent,
+    ProtagonistFormPatchComponent
   ],
   imports: [
     BrowserModule,
@@ -84,7 +87,7 @@ export function apiConfigFactory() {
     FormsModule,
     ReactiveFormsModule,
     OverlayModule,
-
+    MatIconModule,
   ],
   //providers: [ { provide: BASE_PATH, useValue: environment.API_BASE_PATH } ],
   providers: [ ],

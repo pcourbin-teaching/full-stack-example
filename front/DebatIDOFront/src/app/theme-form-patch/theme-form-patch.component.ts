@@ -7,7 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 
 import { ThemeService, Theme } from '../../../DebatIDOAPI';
 
-import { PORTAL_DATA } from '../theme-table/theme-table.component';
+import { PORTAL_DATA } from '../overlay-with-injection.service';
 
 @Component({
   selector: 'app-theme-form-patch',
@@ -17,7 +17,7 @@ import { PORTAL_DATA } from '../theme-table/theme-table.component';
 export class ThemeFormPatchComponent implements OnInit {
   public themeFormGroup: FormGroup;
 
-  constructor(@Inject(PORTAL_DATA) public themeOverlay, private _formBuilder: FormBuilder, private themeService: ThemeService) { }
+  constructor(@Inject(PORTAL_DATA) public overlay, private _formBuilder: FormBuilder, private themeService: ThemeService) { }
 
   ngOnInit() {
       this.formBuild();
@@ -25,14 +25,14 @@ export class ThemeFormPatchComponent implements OnInit {
 
   formBuild(){
     this.themeFormGroup = this._formBuilder.group({
-      title:[this.themeOverlay.theme.title]
+      title:[this.overlay.object.title]
     });
   }
 
   onSubmitForm() {
-    this.themeOverlay.theme.title = this.themeFormGroup.value.title;
-    this.themeService.themesThemeIDPatch(this.themeOverlay.theme.id,this.themeOverlay.theme).subscribe();
-    this.themeOverlay.overlay.detach();
+    this.overlay.object.title = this.themeFormGroup.value.title;
+    this.themeService.themesThemeIDPatch(this.overlay.object.id,this.overlay.object).subscribe();
+    this.overlay.overlay.detach();
   }
 
 }

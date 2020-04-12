@@ -22,7 +22,7 @@
 
   <ng-container matColumnDef="url">
     <th mat-header-cell *matHeaderCellDef mat-sort-header > Link </th>
-    <td mat-cell *matCellDef="let reference"> <div *ngIf="reference.url!==undefined"><a href={{reference.url}} target="_blank">Détails</a> </div> </td>
+    <td mat-cell *matCellDef="let reference"> <div *ngIf="reference.url!==undefined"><a href={{reference.url}} aria-label target="_blank"><mat-icon aria-hidden="false">link</mat-icon></a> </div> </td>
   </ng-container>
 
   <ng-container matColumnDef="date">
@@ -32,7 +32,14 @@
 
   <ng-container matColumnDef="typeTitle">
     <th mat-header-cell *matHeaderCellDef mat-sort-header > Type </th>
-    <td mat-cell *matCellDef="let reference"> {{reference.typeTitle}} </td>
+    <td mat-cell *matCellDef="let reference">
+      <div *ngIf="iconsType[reference.typeID]!==undefined; else second"> <!-- Livre -->
+        <mat-icon aria-hidden="false" title="{{reference.typeTitle}}" style="color:{{iconsType[reference.typeID]['color']}}">{{iconsType[reference.typeID]['icon']}}</mat-icon>
+      </div>
+      <ng-template #second>
+        <mat-icon aria-hidden="false" title="{{reference.typeTitle}}" style="color:{{iconsType['default']['color']}}">{{iconsType['default']['icon']}}</mat-icon>
+      </ng-template>
+     </td>
   </ng-container>
 
   <ng-container matColumnDef="reliability">

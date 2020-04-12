@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, InjectionToken, Inject, Optional } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
@@ -7,6 +7,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatStepperModule, MatStepper } from '@angular/material/stepper';
 
 import { ProtagonistService, Protagonist, Person, Company } from '../../../DebatIDOAPI';
+
+import { PORTAL_DATA } from '../overlay-with-injection.service';
 
 @Component({
   selector: 'app-protagonist-form-new',
@@ -21,11 +23,10 @@ export class ProtagonistFormNewComponent implements OnInit {
   companyFormGroup: FormGroup;
   @ViewChild('stepper') private stepper: MatStepper;
 
-  name = 'Angular';
   protagonistTypes = Protagonist.TypeEnum;
   keys = Object.keys;
 
-  constructor(private _formBuilder: FormBuilder, private protagonistService: ProtagonistService) {}
+  constructor(@Optional() @Inject(PORTAL_DATA) public overlay, private _formBuilder: FormBuilder, private protagonistService: ProtagonistService) {}
 
   ngOnInit() {
       this.formBuild();
@@ -50,10 +51,6 @@ export class ProtagonistFormNewComponent implements OnInit {
 
   onSubmitForm() {
     let myNew = {} as Protagonist;
-    console.log(Protagonist.TypeEnum);
-    console.log(this.protagonistFormGroup.value);
-    console.log(this.personFormGroup.value);
-    console.log(this.companyFormGroup.value);
 
     myNew.type = this.protagonistFormGroup.value.type;
     myNew.name = this.protagonistFormGroup.value.name;
@@ -74,6 +71,10 @@ export class ProtagonistFormNewComponent implements OnInit {
 
     this.protagonistService.protagonistPost(myNew).subscribe();
     this.stepper.reset();
+
+    if (this.overlay){
+      this.overlay.overlay.detach();
+    }
   }
 
 }

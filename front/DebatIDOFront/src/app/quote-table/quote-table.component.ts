@@ -12,8 +12,28 @@ import { QuoteService, Quote } from '../../../DebatIDOAPI';
 })
 export class QuoteTableComponent implements OnInit {
 
-  public columnsToDisplay = [ 'id', 'title', 'details', 'typeTitle' ];
+  public columnsToDisplay = [ 'id', 'typeTitle', 'title', 'details' ];
   public quotes: MatTableDataSource<Quote>;
+
+  public iconsType = {
+    1: {
+      "icon" : "exit_to_app",
+      "color" : "red"
+    },
+    2: {
+      "icon" : "done",
+      "color" : "orange"
+    },
+    3 : {
+      "icon" : "done_all",
+      "color" : "green"
+    },
+    "default" : {
+      "icon" : "done_all",
+      "color" : "green"
+    }
+  };
+
   constructor(private quoteService: QuoteService) {
     quoteService.quoteGet().subscribe(data => {
       this.quotes = new MatTableDataSource<Quote>(data);

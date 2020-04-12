@@ -190,8 +190,8 @@ CREATE TABLE `person` (
   INDEX `I_person_idx` (`id` ASC),
   CONSTRAINT `FK_id_person_protagonist` FOREIGN KEY (`id`)
     REFERENCES `protagonist` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 ) CHARACTER SET utf8mb4;
 
 CREATE TRIGGER TR_person_dateUpdate_updater
@@ -207,8 +207,8 @@ CREATE TABLE `company` (
   INDEX `I_company_idx` (`id` ASC),
   CONSTRAINT `FK_id_company_protagonist` FOREIGN KEY (`id`)
     REFERENCES `protagonist` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 ) CHARACTER SET utf8mb4;
 
 CREATE TRIGGER TR_company_dateUpdate_updater
