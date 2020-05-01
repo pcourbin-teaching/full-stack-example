@@ -25,6 +25,8 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
+import { MatGridListModule } from '@angular/material/grid-list';
 
 import { ThemeTableComponent } from './theme-table/theme-table.component';
 import { ProtagonistTableComponent } from './protagonist-table/protagonist-table.component';
@@ -38,10 +40,13 @@ import { ThemeFormNewComponent } from './theme-form-new/theme-form-new.component
 import { ProtagonistFormNewComponent } from './protagonist-form-new/protagonist-form-new.component';
 import { ThemeFormPatchComponent } from './theme-form-patch/theme-form-patch.component';
 import { ProtagonistFormPatchComponent } from './protagonist-form-patch/protagonist-form-patch.component';
+import { ReferenceSmallComponent } from './reference-small/reference-small.component';
+import { QuoteCardComponent } from './quote-card/quote-card.component';
+import { QuoteListCardsComponent } from './quote-list-cards/quote-list-cards.component';
 
 export function apiConfigFactory() {
     const params: ConfigurationParameters = {
-      apiKeys: {"API_KEY": "G#hqqq8NlW&tz5Hjk#%qcr7^iV*P%2pZWd*!mafPpu5!ANjJwM"},
+      apiKeys: environment.API_KEYS, //{"API_KEY": "G#hqqq8NlW&tz5Hjk#%qcr7^iV*P%2pZWd*!mafPpu5!ANjJwM"},
   //    username?: string;
   //    password?: string;
   //    accessToken?: string | (() => string);
@@ -65,7 +70,10 @@ export function apiConfigFactory() {
     ThemeFormNewComponent,
     ProtagonistFormNewComponent,
     ThemeFormPatchComponent,
-    ProtagonistFormPatchComponent
+    ProtagonistFormPatchComponent,
+    ReferenceSmallComponent,
+    QuoteCardComponent,
+    QuoteListCardsComponent
   ],
   imports: [
     BrowserModule,
@@ -88,8 +96,9 @@ export function apiConfigFactory() {
     ReactiveFormsModule,
     OverlayModule,
     MatIconModule,
+    MatCardModule,
+    MatGridListModule,
   ],
-  //providers: [ { provide: BASE_PATH, useValue: environment.API_BASE_PATH } ],
   providers: [ ],
   bootstrap: [ AppComponent ]
 })

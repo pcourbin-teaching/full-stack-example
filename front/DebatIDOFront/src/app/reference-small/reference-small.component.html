@@ -1,0 +1,34 @@
+<ng-template ngFor let-author [ngForOf]="this.reference.authors" let-i="index">
+    <div class="wrapperReference">
+        <div class="authorImage one">
+            <span *ngIf="author.link!==undefined; else elseBlockAuthor">
+                <a href="{{author.link}}" target="_blank"><img src="{{author.photo}}" title="{{author.name}}" height="100%" width="auto"/></a>
+            </span>
+            <ng-template #elseBlockAuthor>
+                <img src="{{author.photo}}" title="{{author.name}}" height="100%" width="auto"/>
+            </ng-template>
+        </div>
+        <div class="referenceDetails two">
+            <span class="authorName">{{author.name}}</span>
+            <span class="referenceTitle">
+                <span *ngIf="this.reference.url!==undefined; else elseBlockUrl">
+                    , <a href="{{this.reference.url}}" target="_blank" title="{{this.reference.title}}">{{this.reference.title}}</a>
+                </span>
+                <ng-template #elseBlockUrl>
+                    , {{this.reference.title}}
+                </ng-template>
+            </span>
+            
+            <span class="referenceMoreDetails">
+                <span *ngIf="iconsType[this.reference.typeID]!==undefined; else elseBlockType"> <!-- Livre -->
+                    <mat-icon title="{{this.reference.typeTitle}}" style="color:{{iconsType[this.reference.typeID]['color']}}; font-size:inherit;">{{iconsType[this.reference.typeID]['icon']}}</mat-icon>
+                </span>
+                <ng-template #elseBlockType>
+                    <mat-icon title="{{this.reference.typeTitle}}" style="color:{{iconsType['default']['color']}}; font-size:inherit;">{{iconsType['default']['icon']}}</mat-icon>
+                </ng-template>
+                {{this.reference.details}} {{this.reference.date}}
+            </span>
+        </div>
+    </div>
+    
+</ng-template>

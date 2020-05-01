@@ -1,0 +1,9 @@
+.cardList{
+	column-width: 400px;
+    column-gap: 40px;
+}
+.cardItem{
+    margin-bottom: 20px;
+	/* No cross browser 'break-inside' property being supported yet: */
+	display:inline-block;
+}

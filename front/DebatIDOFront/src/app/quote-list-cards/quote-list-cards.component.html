@@ -1,0 +1,6 @@
+
+<div class="cardList">
+    <ng-template ngFor let-quote [ngForOf]="this.quotes">
+        <app-quote-card [quote]="quote" [collapsed]="false" class="cardItem"></app-quote-card>
+    </ng-template>
+</div>

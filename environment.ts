@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  API_BASE_PATH: 'http://localhost:4000'
+  API_BASE_PATH: 'http://localhost:4000',
+  API_KEYS : {"API_KEY": "G#hqqq8NlW&tz5Hjk#%qcr7^iV*P%2pZWd*!mafPpu5!ANjJwM"}
 };
 
 /*

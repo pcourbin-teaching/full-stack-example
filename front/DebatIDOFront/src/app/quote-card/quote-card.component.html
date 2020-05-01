@@ -1,0 +1,39 @@
+<mat-card class="quoteCard">
+    <!--<img ng-src="{{imagePath}}" class="md-card-image" alt="Washed Out">-->
+    <mat-card-header (click)="collapsed=!collapsed">
+        <mat-card-title>
+            {{this.quote.title}}
+        </mat-card-title>
+        <mat-card-subtitle *ngIf="!collapsed">
+            <ng-template ngFor let-theme [ngForOf]="this.quote.themes">
+                #{{theme.title}} 
+            </ng-template>
+        </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content *ngIf="!collapsed">    
+        <span class="quoteType">
+            {{this.quote.typeTitle}}
+            <span *ngIf="iconsType[this.quote.typeID]!==undefined; else elseBlockType"> 
+                <mat-icon aria-hidden="false" title="{{this.quote.typeTitle}}" style="color:{{iconsType[this.quote.typeID]['color']}}; font-size:inherit;">{{iconsType[this.quote.typeID]['icon']}}</mat-icon>
+            </span>
+            <ng-template #elseBlockType>
+                <mat-icon aria-hidden="false" title="{{this.quote.typeTitle}}" style="color:{{iconsType['default']['color']}}; font-size:inherit;">{{iconsType['default']['icon']}}</mat-icon>
+            </ng-template>
+        </span>
+    
+        <span class="quoteDetails">
+            &laquo; {{this.quote.details}} &raquo;
+        </span>
+    
+        <span class="quoteReferences">
+            <ng-template ngFor let-reference [ngForOf]="this.quote.references" let-i="index">
+                <app-reference-small [referenceID]="reference.id"></app-reference-small>
+            </ng-template>
+        </span>
+    
+        <ng-template ngFor let-author [ngForOf]="this.quote.authors" let-i="index">
+            {{author.name}}
+        </ng-template>
+    </mat-card-content>    
+</mat-card>

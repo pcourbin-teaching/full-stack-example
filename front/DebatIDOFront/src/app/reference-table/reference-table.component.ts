@@ -5,6 +5,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 
 import { ReferenceService, Reference } from '../../../DebatIDOAPI';
+import { ReferenceSmallComponent } from '../reference-small/reference-small.component';
+import { OverlayWithInjectionService, PORTAL_DATA } from '../overlay-with-injection.service';
 
 @Component({
   selector: 'app-reference-table',
@@ -15,7 +17,7 @@ import { ReferenceService, Reference } from '../../../DebatIDOAPI';
 
 export class ReferenceTableComponent implements OnInit {
 
-  public columnsToDisplay = [ 'id', 'typeTitle', 'url', 'title', 'details', 'date', 'reliability' ];
+  public columnsToDisplay = [ 'id', 'typeTitle', 'url', 'title', 'details', 'date', 'reliability', 'edit' ];
   public references: MatTableDataSource<Reference>;
 
 /*  '1', 'Livre'
@@ -60,7 +62,7 @@ export class ReferenceTableComponent implements OnInit {
     }
   };
 
-  constructor(private referenceService: ReferenceService) {
+  constructor(private referenceService: ReferenceService, private overlay: OverlayWithInjectionService) {
     referenceService.referenceGet().subscribe(data => {
       this.references = new MatTableDataSource<Reference>(data);
       this.references.sort = this.sort;
@@ -74,4 +76,7 @@ export class ReferenceTableComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  view(reference) {
+    this.overlay.edit(reference, ReferenceSmallComponent);
+  }
 }

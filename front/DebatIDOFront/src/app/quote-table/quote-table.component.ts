@@ -4,6 +4,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 
 import { QuoteService, Quote } from '../../../DebatIDOAPI';
+import { QuoteCardComponent } from '../quote-card/quote-card.component';
+import { OverlayWithInjectionService, PORTAL_DATA } from '../overlay-with-injection.service';
 
 @Component({
   selector: 'app-quote-table',
@@ -12,7 +14,7 @@ import { QuoteService, Quote } from '../../../DebatIDOAPI';
 })
 export class QuoteTableComponent implements OnInit {
 
-  public columnsToDisplay = [ 'id', 'typeTitle', 'title', 'details' ];
+  public columnsToDisplay = [ 'id', 'typeTitle', 'title', 'details', 'edit' ];
   public quotes: MatTableDataSource<Quote>;
 
   public iconsType = {
@@ -34,7 +36,7 @@ export class QuoteTableComponent implements OnInit {
     }
   };
 
-  constructor(private quoteService: QuoteService) {
+  constructor(private quoteService: QuoteService, private overlay: OverlayWithInjectionService) {
     quoteService.quoteGet().subscribe(data => {
       this.quotes = new MatTableDataSource<Quote>(data);
       this.quotes.sort = this.sort;
@@ -46,6 +48,10 @@ export class QuoteTableComponent implements OnInit {
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 
   ngOnInit(): void {
+  }
+
+  view(quote) {
+    this.overlay.edit(quote, QuoteCardComponent);
   }
 
 }
