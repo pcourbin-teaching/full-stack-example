@@ -113,9 +113,9 @@ export class ProtagonistService {
 
         // authentication (ApiKeyAuth) required
         if (this.configuration.apiKeys) {
-            const key: string | undefined = this.configuration.apiKeys["ApiKeyAuth"] || this.configuration.apiKeys["API_KEY"];
+            const key: string | undefined = this.configuration.apiKeys["ApiKeyAuth"] || this.configuration.apiKeys["API-KEY"];
             if (key) {
-                headers = headers.set('API_KEY', key);
+                headers = headers.set('API-KEY', key);
             }
         }
 
@@ -167,9 +167,9 @@ export class ProtagonistService {
 
         // authentication (ApiKeyAuth) required
         if (this.configuration.apiKeys) {
-            const key: string | undefined = this.configuration.apiKeys["ApiKeyAuth"] || this.configuration.apiKeys["API_KEY"];
+            const key: string | undefined = this.configuration.apiKeys["ApiKeyAuth"] || this.configuration.apiKeys["API-KEY"];
             if (key) {
-                headers = headers.set('API_KEY', key);
+                headers = headers.set('API-KEY', key);
             }
         }
 
@@ -230,9 +230,9 @@ export class ProtagonistService {
 
         // authentication (ApiKeyAuth) required
         if (this.configuration.apiKeys) {
-            const key: string | undefined = this.configuration.apiKeys["ApiKeyAuth"] || this.configuration.apiKeys["API_KEY"];
+            const key: string | undefined = this.configuration.apiKeys["ApiKeyAuth"] || this.configuration.apiKeys["API-KEY"];
             if (key) {
-                headers = headers.set('API_KEY', key);
+                headers = headers.set('API-KEY', key);
             }
         }
 
@@ -284,9 +284,9 @@ export class ProtagonistService {
 
         // authentication (ApiKeyAuth) required
         if (this.configuration.apiKeys) {
-            const key: string | undefined = this.configuration.apiKeys["ApiKeyAuth"] || this.configuration.apiKeys["API_KEY"];
+            const key: string | undefined = this.configuration.apiKeys["ApiKeyAuth"] || this.configuration.apiKeys["API-KEY"];
             if (key) {
-                headers = headers.set('API_KEY', key);
+                headers = headers.set('API-KEY', key);
             }
         }
 
@@ -342,9 +342,9 @@ export class ProtagonistService {
 
         // authentication (ApiKeyAuth) required
         if (this.configuration.apiKeys) {
-            const key: string | undefined = this.configuration.apiKeys["ApiKeyAuth"] || this.configuration.apiKeys["API_KEY"];
+            const key: string | undefined = this.configuration.apiKeys["ApiKeyAuth"] || this.configuration.apiKeys["API-KEY"];
             if (key) {
-                headers = headers.set('API_KEY', key);
+                headers = headers.set('API-KEY', key);
             }
         }
 

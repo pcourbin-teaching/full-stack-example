@@ -1174,6 +1174,6 @@ components:
   securitySchemes:
     ApiKeyAuth:
       in: header
-      name: API_KEY
+      name: API-KEY
       type: apiKey
       x-apikeyInfoFunc: DebatIDOAPI.controllers.security_controller_.info_from_ApiKeyAuth
