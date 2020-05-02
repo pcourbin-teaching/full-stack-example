@@ -1,9 +1,12 @@
 .cardList{
 	column-width: 400px;
-    column-gap: 40px;
+    column-gap: 5px;
 }
 .cardItem{
-    margin-bottom: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
 	/* No cross browser 'break-inside' property being supported yet: */
-	display:inline-block;
+	display: inline-block;
 }

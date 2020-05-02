@@ -114,6 +114,21 @@ role = nullif(@role,''),
 dateUpdate = IF(CHAR_LENGTH((@dateUpdate)) = 0, now(), @dateUpdate)
 ;
 
+LOAD DATA INFILE "/var/lib/mysql-files/company.csv"
+REPLACE
+INTO TABLE `company`
+COLUMNS TERMINATED BY ';'
+OPTIONALLY ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES
+
+(@id, @siret, @dateUpdate)
+SET
+id = nullif(@id,''),
+siret = nullif(@siret,''),
+dateUpdate = IF(CHAR_LENGTH((@dateUpdate)) = 0, now(), @dateUpdate)
+;
+
 LOAD DATA INFILE "/var/lib/mysql-files/referenceAuthor.csv"
 INTO TABLE `referenceAuthor`
 COLUMNS TERMINATED BY ';'
