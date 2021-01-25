@@ -39,7 +39,7 @@ services:
     build: ./front/SPOTFront
     volumes:
 #     - ./front/SPOTFront:/app #For development
-     - ./front/SPOTFront/src/app/theme-table:/app/src/app/theme-table #For development on one part
+#     - ./front/SPOTFront/src/app/theme-table:/app/src/app/theme-table #For development on one part
      - ./environment.ts:/app/src/environments/environment.ts #For deployments
     ports:
       - 3000:4200
