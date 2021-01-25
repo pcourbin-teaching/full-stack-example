@@ -27,12 +27,12 @@ For the following, we consider the generated folder [SPOTAPI](SPOTAPI/) from the
 In this file we have defined 4 tags to merge different entry points, each one generated a file in the folder [SPOTAPI/controllers](SPOTAPI/controllers/)
 | Tag | File |
 | --- | --- |
-| `Quote` | [SPOTAPI/controllers/quote_controller.py](SPOTAPI/controllers/quote_controller.py) |
-| `Reference` | [SPOTAPI/controllers/reference_controller.py](SPOTAPI/controllers/reference_controller.py) |
-| `Theme` | [SPOTAPI/controllers/theme_controller.py](SPOTAPI/controllers/theme_controller.py) |
-| `Protagonist` | [SPOTAPI/controllers/protagonist_controller.py](SPOTAPI/controllers/protagonist_controller.py) |
+| `Quote` | [SPOTAPI/controllers/quote_controller.py](SPOTAPI/SPOTAPI/controllers/quote_controller.py) |
+| `Reference` | [SPOTAPI/controllers/reference_controller.py](SPOTAPI/SPOTAPI/controllers/reference_controller.py) |
+| `Theme` | [SPOTAPI/controllers/theme_controller.py](SPOTAPI/SPOTAPI/controllers/theme_controller.py) |
+| `Protagonist` | [SPOTAPI/controllers/protagonist_controller.py](SPOTAPI/SPOTAPI/controllers/protagonist_controller.py) |
 
-For example, in [SPOTAPI/controllers/quote_controller.py](SPOTAPI/controllers/quote_controller.py), we have function `quote_get` which is called when entrypoint `/quote` is called with a `get` method.
+For example, in [SPOTAPI/controllers/quote_controller.py](SPOTAPI/SPOTAPI/controllers/quote_controller.py), we have function `quote_get` which is called when entrypoint `/quote` is called with a `get` method.
 At the beginning, the function is empty and simply returns `'do some magic!'`
 
 ```python
@@ -52,7 +52,7 @@ def quote_get(offset=None, limit=None):  # noqa: E501
 ```
 
 You can now modify these files to add your logic and in particular the connection to your database.
-To keep things separate, in this example you will find a [SPOTAPI/controllers/database_controller.py](SPOTAPI/controllers/database_controller.py) file **which is not generated** but contains all the logic and the connection to the database.
+To keep things separate, in this example you will find a [SPOTAPI/controllers/database_controller.py](SPOTAPI/SPOTAPI/controllers/database_controller.py) file **which is not generated** but contains all the logic and the connection to the database.
 
 Going back to the previous example, we just have to add the import to our file `from SPOTAPI.controllers.database_controller import Database` and then modify the return of the function `quote_get`:
 
@@ -75,7 +75,7 @@ def quote_get(offset=None, limit=None):  # noqa: E501
 ```
 
 ### Security controller
-A specific file [SPOTAPI/controllers/security_controller_.py](SPOTAPI/controllers/security_controller_.py) is generated linked with the `securitySchemes` defined in our [openapi-spot.yaml](openapi-spot.yaml) file.
+A specific file [SPOTAPI/controllers/security_controller_.py](SPOTAPI/SPOTAPI/controllers/security_controller_.py) is generated linked with the `securitySchemes` defined in our [openapi-spot.yaml](openapi-spot.yaml) file.
 
 ```yaml
   ####################
@@ -90,13 +90,13 @@ A specific file [SPOTAPI/controllers/security_controller_.py](SPOTAPI/controller
 
 For this example, we decided to use a simple API key, but [many other choices are possible](https://swagger.io/docs/specification/authentication/).
 
-The [SPOTAPI/controllers/security_controller_.py](SPOTAPI/controllers/security_controller_.py) file contains one function `info_from_ApiKeyAuth` which will be called each time **before** the desired entry point. It has to check if the user has the right to access this API.
+The [SPOTAPI/controllers/security_controller_.py](SPOTAPI/SPOTAPI/controllers/security_controller_.py) file contains one function `info_from_ApiKeyAuth` which will be called each time **before** the desired entry point. It has to check if the user has the right to access this API.
 
 The key passed by the user is available in the `api_key` variable, you can for example check your database to which user it corresponds. For the example, we are simply using a local dictionary.
 
 ### Add your requirements
 You have to edit the file [SPOTAPI/requirements.txt](SPOTAPI/requirements.txt) with your needed packages.
-For example, we added `mysql-connector-python` used in [SPOTAPI/controllers/database_controller.py](SPOTAPI/controllers/database_controller.py)
+For example, we added `mysql-connector-python` used in [SPOTAPI/controllers/database_controller.py](SPOTAPI/SPOTAPI/controllers/database_controller.py)
 
 ### Regenerate without losing all your work
 Each time you run the OpenAPI generator ([openapi_codegen.sh](openapi_codegen.sh)), all files will be regenerated.
@@ -113,7 +113,7 @@ Your API is ready, you want to test it using Docker.
 We have defined a [docker-compose.yml](docker-compose.yml) file to generate the container using [SPOTAPI/Dockerfile](SPOTAPI/Dockerfile). 
 Note that:
 - We edited the generated file [SPOTAPI/__main__.py](SPOTAPI/__main__.py) to be able to use an environment variable to change the `PORT` used by the application. We also add [CORS](https://swagger.io/docs/open-source-tools/swagger-ui/usage/cors/) to be able to use the API with our front. 
-- We use environment variable in [SPOTAPI/controllers/database_controller.py](SPOTAPI/controllers/database_controller.py) to be able to change the database link.
+- We use environment variable in [SPOTAPI/controllers/database_controller.py](SPOTAPI/SPOTAPI/controllers/database_controller.py) to be able to change the database link.
 
 ```yaml
 version: '3'
@@ -144,7 +144,7 @@ Then, you can:
 | `docker-compose logs -f api` | continuously display the logs of the container |
 
 Finally, go to [http://localhost:4000/ui](http://localhost:3000/ui) to test your API.
-Do not forget to use `API_KEY` defined in [SPOTAPI/controllers/security_controller_.py](SPOTAPI/controllers/security_controller_.py)
+Do not forget to use `API_KEY` defined in [SPOTAPI/controllers/security_controller_.py](SPOTAPI/SPOTAPI/controllers/security_controller_.py)
 
 ## Note
 Each time you changed your code, you can simply use the script [gen_run_docker.sh](gen_run_docker.sh) which will recreate the docker image, then the container and finally display the logs of the container.
