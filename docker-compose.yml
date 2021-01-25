@@ -3,15 +3,17 @@ services:
   db:
     image: mysql:8.0.19
     volumes:
-     - ./data-init/scripts:/docker-entrypoint-initdb.d
-     - ./data-init/files:/var/lib/mysql-files
+     - ./data/scripts:/docker-entrypoint-initdb.d
+     - ./data/files:/var/lib/mysql-files
     environment:
         MYSQL_ROOT_PASSWORD: rootpassword
-        MYSQL_DATABASE: debatsido
+        MYSQL_DATABASE: spot
         MYSQL_USER: user
         MYSQL_PASSWORD: password
     ports:
        - "3306:3306"
+    networks:
+      - spot-network
     restart: always
     command:
       - '--character-set-server=utf8mb4'
@@ -19,27 +21,30 @@ services:
       - '--default-authentication-plugin=mysql_native_password'
 
   api:
-    image: pcourbin/debatsido_api:0.1.0
-    build: ./api/DebatIDOAPI
-    volumes:
-     - ./api/DebatIDOAPI/DebatIDOAPI:/usr/src/app/DebatIDOAPI #For development
+    image: pcourbin/spot_api:0.1.0
+    build: ./api/SPOTAPI
     environment:
-        DATABASE_URL: "mysql://user:password@db:3306/debatsido"
-        PORT: "3000"
+        DATABASE_URL: "mysql://user:password@db:3306/spot"
+        PORT: "4000"
     ports:
-      - 4000:3000
+      - 4000:4000
+    networks:
+      - spot-network
     depends_on:
       - db
     restart: always
 
   front:
-    image: pcourbin/debatsido_front:0.1.0
-    build: ./front/DebatIDOFront
+    image: pcourbin/spot_front:0.1.0
+    build: ./front/SPOTFront
     volumes:
-     - ./front/DebatIDOFront:/app #For development
+#     - ./front/SPOTFront:/app #For development
+     - ./front/SPOTFront/src/app/theme-table:/app/src/app/theme-table #For development on one part
      - ./environment.ts:/app/src/environments/environment.ts #For deployments
     ports:
       - 3000:4200
+    networks:
+      - spot-network
     depends_on:
       - db
       - api
@@ -54,4 +59,10 @@ services:
         PMA_USER: user
         PMA_PASSWORD: password
     ports:
-       - "8100:80"
+       - "5000:80"
+    networks:
+      - spot-network
+
+networks:
+  spot-network:
+    external: true

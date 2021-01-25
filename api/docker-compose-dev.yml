@@ -3,13 +3,13 @@ services:
   api:
     image: pcourbin/spot_api:0.1.0
     build: ./SPOTAPI
+    volumes:
+     - ./SPOTAPI/SPOTAPI:/usr/src/app/SPOTAPI #For development
     environment:
-        DATABASE_URL: "mysql://user:password@db:3306/spot"
+        DATABASE_URL: "mysql://user:password@db:3306/debatsido"
         PORT: "4000"
     ports:
       - 4000:4000
-    networks:
-      - spot-network
     restart: always
 
 networks:

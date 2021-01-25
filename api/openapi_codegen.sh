@@ -1,8 +1,8 @@
 #!/bin/bash
 #set -ev
-openapi_file="openapi-debatsido.yaml"
+openapi_file="openapi-spot.yaml"
 out_framework="python-flask"
-package_name="DebatIDOAPI"
+package_name="SPOTAPI"
 
 openapi_file=${1:-$openapi_file}
 out_framework=${2:-$out_framework}
