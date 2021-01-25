@@ -77,7 +77,7 @@ def quote_get(offset=None, limit=None):  # noqa: E501
 ### Security controller
 A specific file [SPOTAPI/controllers/security_controller_.py](SPOTAPI/controllers/security_controller_.py) is generated linked with the `securitySchemes` defined in our [openapi-spot.yaml](openapi-spot.yaml) file.
 
-```
+```yaml
   ####################
   # Security
   ####################
@@ -115,7 +115,7 @@ Note that:
 - We edited the generated file [SPOTAPI/__main__.py](SPOTAPI/__main__.py) to be able to use an environment variable to change the `PORT` used by the application. We also add [CORS](https://swagger.io/docs/open-source-tools/swagger-ui/usage/cors/) to be able to use the API with our front. 
 - We use environment variable in [SPOTAPI/controllers/database_controller.py](SPOTAPI/controllers/database_controller.py) to be able to change the database link.
 
-```
+```yaml
 version: '3'
 services:
   api:
