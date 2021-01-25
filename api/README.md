@@ -24,7 +24,7 @@ Then run:
 For the following, we consider the generated folder [SPOTAPI](SPOTAPI/) from the description file [openapi-spot.yaml](openapi-spot.yaml).
 
 ### Main controllers
-In this file we have defined 4 tags to merge different entry points, each one generated a file in the folder [SPOTAPI/controllers](SPOTAPI/controllers/)
+In this file we have defined 4 tags to merge different entry points, each one generated a file in the folder [SPOTAPI/controllers](SPOTAPI/SPOTAPI/controllers/)
 | Tag | File |
 | --- | --- |
 | `Quote` | [SPOTAPI/controllers/quote_controller.py](SPOTAPI/SPOTAPI/controllers/quote_controller.py) |
@@ -92,7 +92,7 @@ For this example, we decided to use a simple API key, but [many other choices ar
 
 The [SPOTAPI/controllers/security_controller_.py](SPOTAPI/SPOTAPI/controllers/security_controller_.py) file contains one function `info_from_ApiKeyAuth` which will be called each time **before** the desired entry point. It has to check if the user has the right to access this API.
 
-The key passed by the user is available in the `api_key` variable, you can for example check your database to which user it corresponds. For the example, we are simply using a local dictionary.
+The key passed by the user is available in the `api_key` variable, you can for example check your database to find which user it corresponds. For the example, we are simply using a local dictionary.
 
 ### Add your requirements
 You have to edit the file [SPOTAPI/requirements.txt](SPOTAPI/requirements.txt) with your needed packages.
@@ -103,7 +103,7 @@ Each time you run the OpenAPI generator ([openapi_codegen.sh](openapi_codegen.sh
 If you just add an entry point on a specific tag, you can ask the generator to ignore others files.
 For that you can edit file [SPOTAPI/.openapi-generator-ignore](SPOTAPI/.openapi-generator-ignore).
 
-For example, do not forget to add `requirements.txt` if you do not want to re-add your requirements.txt each time you regenerate your API.
+For example, do not forget to add `requirements.txt` if you do not want to re-add your `requirements.txt` each time you regenerate your API.
 
 
 # Run a Docker with your API
@@ -112,7 +112,7 @@ Your API is ready, you want to test it using Docker.
 
 We have defined a [docker-compose.yml](docker-compose.yml) file to generate the container using [SPOTAPI/Dockerfile](SPOTAPI/Dockerfile). 
 Note that:
-- We edited the generated file [SPOTAPI/__main__.py](SPOTAPI/__main__.py) to be able to use an environment variable to change the `PORT` used by the application. We also add [CORS](https://swagger.io/docs/open-source-tools/swagger-ui/usage/cors/) to be able to use the API with our front. 
+- We edited the generated file [SPOTAPI/__main__.py](SPOTAPI/SPOTAPI/__main__.py) to be able to use an environment variable to change the `PORT` used by the application. We also add [CORS](https://swagger.io/docs/open-source-tools/swagger-ui/usage/cors/) to be able to use the API with our front. 
 - We use environment variable in [SPOTAPI/controllers/database_controller.py](SPOTAPI/SPOTAPI/controllers/database_controller.py) to be able to change the database link.
 
 ```yaml
