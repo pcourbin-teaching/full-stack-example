@@ -5,10 +5,10 @@ We use :
 - and docker volumes to ingest CSV [files](files/) using [scripts](scripts/) 
 
 To link others containers ([api](../api/) and [front](../front/)) with the database container, we use external docker network. If it is not already done, create it:
-``terminal
+```terminal
 docker network create spot-network
-``
+```
 Then, you can deploy the database and let it ingest your data:
-``terminal
+```terminal
 docker-compose up -d
-``
+```
